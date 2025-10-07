@@ -12,7 +12,6 @@ import speakersData from "@/data/speakers.json";
 
 const Speakers = () => {
   let filteredSpeakers = speakersData;
-  // filteredSpeakers = [];
 
   return (
     <motion.div
@@ -40,11 +39,7 @@ const Speakers = () => {
 
       <section className="py-20 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* <h1 className="text-center ">Coming soon</h1> */}
-          <div
-            className="grid gap-6 lg:gap-8 justify-items-center 
-                grid-cols-[repeat(auto-fit,minmax(300px,1fr))]"
-          >
+          <div className="grid gap-6 lg:gap-8 justify-center grid-cols-[repeat(auto-fit,300px)]">
             {filteredSpeakers.map((speaker, index) => (
               <motion.div
                 key={speaker.id}
@@ -90,7 +85,6 @@ const Speakers = () => {
                           {speaker.bio}
                         </p>
 
-                        {/* Social links always visible */}
                         <div className="mt-4 flex gap-3">
                           <a
                             href={

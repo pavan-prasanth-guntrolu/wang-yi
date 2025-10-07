@@ -1,1 +1,0 @@
-import{r as s,O as o,n as u}from"./index-GfK4j188.js";var n=o[" useId ".trim().toString()]||(()=>{}),c=0;function i(t){const[r,a]=s.useState(n());return u(()=>{a(e=>e??String(c++))},[t]),t||(r?`radix-${r}`:"")}export{i as u};

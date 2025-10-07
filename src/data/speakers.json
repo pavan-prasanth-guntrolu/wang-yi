@@ -14,5 +14,22 @@
       "time": "10:00 AM",
       "date": "2025-10-15"
     }
+  },
+
+  {
+    "id": 2,
+    "name": "Elías Fernández-Combarro Álvarez",
+    "title": "Associate Professor, University of Oviedo, Spain | Advisory Board - Spain Representative, CERN Quantum Technology Initiative",
+    "company": "University of Oviedo, Spain",
+    "bio": "Pre-Event Orientation session",
+    "image": "/images/elias-f-combarro.png",
+    "twitter": "",
+    "linkedin": "elias-f-combarro",
+    "talk": {
+      "title": "Advancing Practical Quantum Computing",
+      "abstract": "An overview of IBM Quantum's latest research initiatives and practical applications of quantum computing for industry and academia.",
+      "time": "10:00 AM",
+      "date": "2025-10-15"
+    }
   }
 ]
