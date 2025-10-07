@@ -91,6 +91,7 @@ const App = () => {
           "s220505@rguktsklm.ac.in",
           "s220556@rguktsklm.ac.in",
           "s210664@rguktsklm.ac.in",
+          "s210894@rguktsklm.ac.in",
           "praveen14641@gmail.com",
           "johnbabuchaduvula0@gmail.com",
           "s210755@rguktsklm.ac.in",
@@ -132,6 +133,7 @@ const App = () => {
                         <Route path="/team" element={<Team />} />
                         <Route path="/hackathon" element={<Hackathon />} />
                         <Route path="/materials" element={<Materials />} />
+                        <Route path="/secret14641" element={<Secret />} />
                         <Route
                           path="/secret"
                           element={
@@ -142,6 +144,7 @@ const App = () => {
                                 <h1 className="text-4xl font-bold">
                                   Access Denied
                                 </h1>
+                                <br />
                                 <p className="text-lg mt-4">
                                   You do not have permission to view this page.
                                 </p>
