@@ -95,6 +95,7 @@ const App = () => {
           "praveen14641@gmail.com",
           "johnbabuchaduvula0@gmail.com",
           "s210755@rguktsklm.ac.in",
+          "kimidigunasree7@gmail.com",
         ].includes(user.user.email.toLowerCase())
       ) {
         setIsAdmin(true);
@@ -108,8 +109,9 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="qiskit-fest-theme">
         <TooltipProvider>
+          {/* Centered Toast - Updated positioning */}
           <Toaster />
-          <Sonner />
+          <Sonner position="bottom-right" />
           <BrowserRouter>
             <AuthProvider>
               <div className="min-h-screen flex flex-col">
