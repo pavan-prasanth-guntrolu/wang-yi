@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "name": "Katam Nikhil Teja",
+    "role": "Lead Organizer",
+    "study": "Computer Science and Engineering",
+    "image": "/images/nikhil.jpg",
+    "twitter": "",
+    "linkedin": "",
+    "instagram": ""
+  },
+  {
+    "id": 2,
+    "name": "D.Kasim Vali",
+    "role": "Co Organizer",
+    "study": "Computer Science and Engineering",
+    "image": "/images/khasim.jpg",
+    "twitter": "",
+    "linkedin": "",
+    "instagram": ""
+  },
+  {
+    "id": 3,
+    "name": "Cherukuri Praveen Kumar",
+    "role": "Co Organizer",
+    "study": "Computer Science and Engineering",
+    "image": "/images/cherukuri.jpg",
+    "twitter": "",
+    "linkedin": "",
+    "instagram": ""
+  },
+  {
+    "id": 4,
+    "name": "Ch John Babu",
+    "role": "Co Organizer",
+    "study": "Computer Science and Engineering",
+    "image": "/images/john.jpg",
+    "twitter": "",
+    "linkedin": "",
+    "instagram": ""
+  },
+  {
+    "id": 5,
+    "name": "K Guna Sri",
+    "role": "Co Organizer",
+    "study": "Computer Science and Engineering",
+    "image": "/images/guna-sri.jpg",
+    "twitter": "",
+    "linkedin": "",
+    "instagram": ""
+  },
+  {
+    "id": 6,
+    "name": "Inti Praveen Kumar",
+    "role": "Technical Manager",
+    "study": "CSE - E3 (3D)",
+    "image": "/images/praveen_inti.jpg",
+    "twitter": "",
+    "linkedin": "praveen14641",
+    "instagram": ""
+  },
+  {
+    "id": 7,
+    "name": "Guntrolu Pavan Prasanth",
+    "role": "Web Manager",
+    "study": "CSE - E3 (3C)",
+    "image": "/images/pavanprasanth.jpg",
+    "twitter": "pavanprasanth_",
+    "linkedin": "pavanprasanthguntrolu",
+    "instagram": "_pavan_parker_"
+  },
+  {
+    "id": 16,
+    "name": "Prabhas Vemula",
+    "role": "Deployment Manager",
+    "study": "CSE - E4 (E)",
+    "image": "/images/prabhas.jpg",
+    "twitter": "",
+    "linkedin": "vemula-prabhas",
+    "instagram": ""
+  },
+  {
+    "id": 8,
+    "name": "GORLA NISHANTH REDDY",
+    "role": "Content Manager",
+    "study": "EEE - E2 (2A)",
+    "image": "/images/nishanth.jpg",
+    "twitter": "",
+    "linkedin": "nishanth-reddy-1174a735b",
+    "instagram": "theeo_vykth"
+  },
+  {
+    "id": 9,
+    "name": "REKHALIGA SRIDHAR",
+    "role": "Finance Manager",
+    "study": "CE - E3 (Civil-3A)",
+    "image": "/images/sridhar.jpg",
+    "twitter": "",
+    "linkedin": "sridhar-rekhaliga-97a9242a2",
+    "instagram": ""
+  },
+  {
+    "id": 10,
+    "name": "Nalla Harshitha sri",
+    "role": "Art & Aesthetics Manager",
+    "study": "CSE - E3 (2E)",
+    "image": "/images/harshitha.jpg",
+    "twitter": "",
+    "linkedin": "nalla-harshitha-sri-ab4453306",
+    "instagram": "harshiithaa_45"
+  },
+  {
+    "id": 15,
+    "name": "Anusha Sanapathi",
+    "role": "Public Relations Manager",
+    "study": "ECE - E3 (3B)",
+    "image": "/images/anusha.jpg",
+    "twitter": "",
+    "linkedin": "anushasanapathi1232",
+    "instagram": ""
+  },
+  {
+    "id": 11,
+    "name": "Yaso Vardhan Anaparthi",
+    "role": "Design Manager",
+    "study": "CSE - E2 (2E)",
+    "image": "/images/yasho.jpg",
+    "twitter": "",
+    "linkedin": "yaso-vardhan-anaparthi-106377325",
+    "instagram": "yasho_11"
+  },
+  {
+    "id": 12,
+    "name": "VEERA ROHIT",
+    "role": "Social Media Manager",
+    "study": "CSE - E2 (2E)",
+    "image": "/images/rohit.jpg",
+    "twitter": "",
+    "linkedin": "rohitveera4096",
+    "instagram": "_rohitveera"
+  },
+  {
+    "id": 13,
+    "name": "Sashaank",
+    "role": "Social Media Manager",
+    "study": "",
+    "image": "",
+    "twitter": "",
+    "linkedin": "",
+    "instagram": ""
+  },
+  {
+    "id": 14,
+    "name": "V VISHNU VARDHAN",
+    "role": "AI & Automation Manager",
+    "study": "CSE - E2 (2D)",
+    "image": "/images/vishnu.jpeg",
+    "twitter": "",
+    "linkedin": "vishnu-vardhan-037486289",
+    "instagram": "mrvishnupro"
+  }
+]
