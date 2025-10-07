@@ -456,7 +456,8 @@ const Refer = () => {
                               {referrer.fullName}
                             </p>
                             <p className="text-sm text-muted-foreground">
-                              {/* {referrer.email} */}
+                              {/* {referrer} */}
+                              {console.log(referrer)}
                             </p>
                           </div>
                         </div>
