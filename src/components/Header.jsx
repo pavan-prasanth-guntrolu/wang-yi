@@ -44,7 +44,7 @@ const Header = () => {
         { name: "Hackathon", href: "/hackathon" },
         { name: "ambassador", href: "/ambassador" },
         { name: "guest speaker", href: "/guest-speaker" },
-        { name: "accommodation", href: "/accommodation" },
+        // { name: "accommodation", href: "/accommodation" },
       ],
     },
     {
