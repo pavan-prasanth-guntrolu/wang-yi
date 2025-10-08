@@ -129,6 +129,7 @@ const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [alreadyRegistered, setAlreadyRegistered] = useState(false);
+  const [isReferralCodeLocked, setIsReferralCodeLocked] = useState(false);
 
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -143,10 +144,10 @@ const Register = () => {
 
   useEffect(() => {
     const ref = searchParams.get("ref");
-    if (ref) {
+    if (ref && !isReferralCodeLocked) {
       setFormData((prev) => ({ ...prev, referralCode: ref }));
     }
-  }, [searchParams]);
+  }, [searchParams, isReferralCodeLocked]);
 
   useEffect(() => {
     const checkRegistration = async () => {
@@ -157,7 +158,22 @@ const Register = () => {
             .select("*")
             .eq("user_id", user.id)
             .single();
-          if (existing) setAlreadyRegistered(true);
+          if (existing) {
+            setAlreadyRegistered(true);
+            // Check if user already has a referral code set
+            if (existing.referred_by) {
+              setIsReferralCodeLocked(true);
+              // Fetch the referrer's code to display
+              const { data: referrer } = await supabase
+                .from("registrations")
+                .select("referral_code")
+                .eq("id", existing.referred_by)
+                .single();
+              if (referrer) {
+                setFormData((prev) => ({ ...prev, referralCode: referrer.referral_code }));
+              }
+            }
+          }
         } catch (error) {
           console.error("Error checking registration:", error);
         }
@@ -467,7 +483,10 @@ const Register = () => {
 
                 {/* Referral */}
                 <div>
-                  <Label htmlFor="referralCode">Referral Code (Optional)</Label>
+                  <Label htmlFor="referralCode">
+                    Referral Code (Optional)
+                    {isReferralCodeLocked && " 🔒"}
+                  </Label>
                   <Input
                     id="referralCode"
                     value={formData.referralCode}
@@ -475,7 +494,15 @@ const Register = () => {
                       handleInputChange("referralCode", e.target.value)
                     }
                     placeholder="Enter referral code if you have one"
+                    disabled={isReferralCodeLocked}
+                    readOnly={isReferralCodeLocked}
+                    className={isReferralCodeLocked ? "bg-muted cursor-not-allowed" : ""}
                   />
+                  {isReferralCodeLocked && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Your referral code is locked and cannot be changed.
+                    </p>
+                  )}
                 </div>
 
                 {/* Academic Info */}

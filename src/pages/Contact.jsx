@@ -9,8 +9,14 @@ import {
   ArrowRight,
   CheckCircle,
   AlertCircle,
+  AtSign,
+  Users,
+  LifeBuoy,
+  Handshake,
+  Info,
 } from "lucide-react";
-import { FaLinkedin, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
+import { FaLinkedin, FaYoutube, FaInstagram, FaDiscord } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/lib/supabase";
@@ -63,37 +69,51 @@ const Contact = () => {
   const contactMethods = [
     {
       icon: Mail,
-      title: "Email Us",
+      title: "General Queries",
       description: "Get in touch with our organizing team",
-      contact: "qiskit.fallfest@rguktsklm.ac.in",
-      action: "mailto:qiskit.fallfest@rguktsklm.ac.in",
+      contact: "qiskitfallfest25@rgukt.in",
+      action: "mailto:qiskitfallfest25@rgukt.in",
     },
     {
-      icon: Phone,
-      title: "Call Us",
-      description: "Speak directly with organizers",
-      contact: "+91 93928 10073",
-      action: "tel:+919392810073",
+      icon: AtSign,
+      title: "Hackathon Support",
+      description: "Registration, submissions, and judging",
+      contact: "support.quantum@rgukt.in",
+      action: "mailto:support.quantum@rgukt.in",
     },
     {
-      icon: MapPin,
-      title: "Visit Us",
-      description: "RGUKT Srikakulam Campus",
-      contact: "Srikakulam, Andhra Pradesh, India",
-      action: "https://maps.app.goo.gl/Eo9Jy9rXVHPQZnSt8",
+      icon: Users,
+      title: "Team & Volunteers",
+      description: "Internal coordination & volunteer onboarding",
+      contact: "team.quantum@rgukt.in",
+      action: "mailto:team.quantum@rgukt.in",
+    },
+    {
+      icon: Handshake,
+      title: "Partnerships",
+      description: "Sponsor and collaborator outreach",
+      contact: "sponsors.quantum@rgukt.in",
+      action: "mailto:sponsors.quantum@rgukt.in",
+    },
+    {
+      icon: LifeBuoy,
+      title: "Technical Support",
+      description: "Platform or access issues",
+      contact: "quantum@rgukt.in",
+      action: "mailto:quantum@rgukt.in",
+    },
+    {
+      icon: Info,
+      title: "Information Desk",
+      description: "Media, press, and general info",
+      contact: "info.quantum@rgukt.in",
+      action: "mailto:info.quantum@rgukt.in",
     },
   ];
 
   const socialLinks = [
     {
-      icon: FaLinkedin,
-      name: "LinkedIn",
-      url: "https://www.linkedin.com/company/rguktsklm-qff2025/",
-      color: "from-blue-600 to-blue-800",
-      hoverColor: "group-hover:from-blue-700 group-hover:to-blue-900",
-    },
-    {
-      icon: FaTwitter,
+      icon: FaXTwitter,
       name: "X (Twitter)",
       url: "https://x.com/rguktsklm_qff25?t=biaMBN4M9_3vEKNrAH7Hxg&s=08",
       color: "from-gray-700 to-gray-900",
@@ -107,12 +127,26 @@ const Contact = () => {
       hoverColor: "group-hover:from-red-700 group-hover:to-red-900",
     },
     {
+      icon: FaLinkedin,
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/company/rguktsklm-qff2025/",
+      color: "from-blue-600 to-blue-800",
+      hoverColor: "group-hover:from-blue-700 group-hover:to-blue-900",
+    },
+    {
       icon: FaInstagram,
       name: "Instagram",
       url: "https://www.instagram.com/rguktsklm_qff2025/",
       color: "from-pink-500 via-purple-500 to-indigo-500",
       hoverColor:
         "group-hover:from-pink-600 group-hover:via-purple-600 group-hover:to-indigo-600",
+    },
+    {
+      icon: FaDiscord,
+      name: "Discord",
+      url: "https://discord.gg/hHfrUHVZqZ",
+      color: "from-indigo-600 to-indigo-800",
+      hoverColor: "group-hover:from-indigo-700 group-hover:to-indigo-900",
     },
   ];
 
@@ -188,7 +222,7 @@ const Contact = () => {
               <h2 className="text-2xl font-bold font-poppins mb-6 text-center">
                 Connect With Us <span className="text-gradient">Socially</span>
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 {socialLinks.map((social, index) => {
                   const SocialIcon = social.icon;
                   return (
@@ -390,10 +424,10 @@ const Contact = () => {
                     We follow a zero-tolerance Code of Conduct. Respect everyone
                     — harassment is not tolerated. Report incidents to
                     <a
-                      href="mailto:qiskit.fallfest@rguktsklm.ac.in"
+                      href="mailto:contact.quantum@rgukt.in"
                       className="text-primary hover:underline ml-1"
                     >
-                      qiskit.fallfest@rguktsklm.ac.in
+                      contact.quantum@rgukt.in
                     </a>
                     .
                   </p>

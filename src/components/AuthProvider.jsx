@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 const AuthContext = createContext();
@@ -6,9 +6,12 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [hasCompletedRegistration, setHasCompletedRegistration] = useState(false);
+  const [registrationLoading, setRegistrationLoading] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminLoading, setAdminLoading] = useState(true);
 
   useEffect(() => {
-    // Check active session
     const getSession = async () => {
       const {
         data: { session },
@@ -19,7 +22,6 @@ export function AuthProvider({ children }) {
 
     getSession();
 
-    // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -30,13 +32,94 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const value = {
-    signUp: (data) => supabase.auth.signUp(data),
-    signIn: (data) => supabase.auth.signInWithPassword(data),
-    signOut: () => supabase.auth.signOut(),
-    user,
-    loading,
-  };
+  useEffect(() => {
+    const checkRegistrationStatus = async () => {
+      if (!user?.id) {
+        setHasCompletedRegistration(false);
+        return;
+      }
+
+      setRegistrationLoading(true);
+      try {
+        const { data } = await supabase
+          .from("registrations")
+          .select("id")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        setHasCompletedRegistration(Boolean(data));
+      } catch (error) {
+        console.error("Failed to check registration status", error);
+        setHasCompletedRegistration(false);
+      } finally {
+        setRegistrationLoading(false);
+      }
+    };
+
+    const checkAdminStatus = async () => {
+      setAdminLoading(true);
+      try {
+        const { data: settings, error } = await supabase
+          .from("site_settings")
+          .select("admin_emails")
+          .maybeSingle();
+
+        if (error) {
+          throw error;
+        }
+
+        const emailList = settings?.admin_emails || [];
+        const normalizedUserEmail = user?.email?.toLowerCase();
+
+        setIsAdmin(Boolean(normalizedUserEmail && emailList.some((email) => email.toLowerCase() === normalizedUserEmail)));
+      } catch (error) {
+        console.error("Failed to check admin status", error);
+        setIsAdmin(false);
+      } finally {
+        setAdminLoading(false);
+      }
+    };
+
+    Promise.all([checkRegistrationStatus(), checkAdminStatus()]);
+  }, [user?.email, user?.id]);
+
+  const refreshRegistrationStatus = useCallback(async () => {
+    if (!user?.id) {
+      setHasCompletedRegistration(false);
+      return;
+    }
+
+    setRegistrationLoading(true);
+    try {
+      const { data } = await supabase
+        .from("registrations")
+        .select("id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      setHasCompletedRegistration(Boolean(data));
+    } catch (error) {
+      console.error("Failed to refresh registration status", error);
+    } finally {
+      setRegistrationLoading(false);
+    }
+  }, [user?.id]);
+
+  const value = useMemo(
+    () => ({
+      signUp: (data) => supabase.auth.signUp(data),
+      signIn: (data) => supabase.auth.signInWithPassword(data),
+      signOut: () => supabase.auth.signOut(),
+      user,
+      loading,
+      registrationLoading,
+      hasCompletedRegistration,
+      refreshRegistrationStatus,
+      isAdmin,
+      adminLoading,
+    }),
+    [adminLoading, hasCompletedRegistration, isAdmin, loading, refreshRegistrationStatus, registrationLoading, user]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
