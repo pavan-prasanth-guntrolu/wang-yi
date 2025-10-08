@@ -39,16 +39,8 @@ const CodeOfConduct = () => {
               <p className="text-muted-foreground leading-relaxed mb-6">
                 We follow a zero-tolerance Code of Conduct. Respect everyone —
                 harassment is not tolerated. Report incidents to
-                contact@temporary.
+                qiskit.fallfest@rguktsklm.ac.in.
               </p>
-              <div className="text-center">
-                <Button className="btn-quantum" asChild>
-                  <a href="mailto:contact@REPLACE_WITH_EMAIL">
-                    <Mail className="w-4 h-4 mr-2" />
-                    Report Incident
-                  </a>
-                </Button>
-              </div>
             </CardContent>
           </Card>
 

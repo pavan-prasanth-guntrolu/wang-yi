@@ -38,6 +38,7 @@ const Supporters = lazy(() => import("@/pages/Supporters"));
 const Secret = lazy(() => import("@/pages/Secret"));
 const Ambassador = lazy(() => import("@/pages/Ambassador"));
 const GuestSpeaker = lazy(() => import("@/pages/GuestSpeaker"));
+const Accommodation = lazy(() => import("@/pages/Accommodation"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -169,6 +170,10 @@ const App = () => {
                         />
                         <Route path="/login" element={<Login />} />
                         <Route path="/refer" element={<Refer />} />
+                        <Route
+                          path="/accommodation"
+                          element={<Accommodation />}
+                        />
                         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                         <Route path="*" element={<NotFound />} />
                       </Routes>
