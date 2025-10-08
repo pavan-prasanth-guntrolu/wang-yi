@@ -1,10 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
 import NewLogo from "../../Graphics/Badge/Badge.png";
 import RguktLogo from "../../Graphics/rgukt_logo.png";
 import { useAuth } from "@/components/AuthProvider";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -167,13 +174,31 @@ const Header = () => {
               </button>
             </Link>
             {user ? (
-              <button
-                onClick={signOut}
-                className="btn-quantum px-4 py-2 text-primary-foreground rounded-lg shadow-md relative group animate-pulse-glow"
-              >
-                <span className="relative z-10">Sign Out</span>
-                <span className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity"></span>
-              </button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="btn-quantum px-4 py-2 text-primary-foreground rounded-lg shadow-md relative group animate-pulse-glow flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    <span className="relative z-10">Account</span>
+                    <span className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity"></span>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="flex items-center gap-2 cursor-pointer">
+                      <User className="h-4 w-4" />
+                      My Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={signOut}
+                    className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Link to="/login">
                 <button className="btn-quantum px-4 py-2 text-primary-foreground rounded-lg shadow-md relative group animate-pulse-glow">
@@ -279,16 +304,24 @@ const Header = () => {
                 </Link>
               }
               {user ? (
-                <button
-                  onClick={() => {
-                    signOut();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="w-full btn-quantum px-3 py-2 text-primary-foreground rounded-lg shadow-md relative group animate-pulse-glow"
-                >
-                  <span className="relative z-10">Sign Out</span>
-                  <span className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity"></span>
-                </button>
+                <div className="space-y-2">
+                  <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)}>
+                    <button className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-white hover:bg-primary/10 hover:text-primary rounded-lg">
+                      <User className="h-4 w-4" />
+                      My Profile
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-lg"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </button>
+                </div>
               ) : (
                 <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="w-full btn-quantum px-3 py-2 text-primary-foreground rounded-lg shadow-md relative group animate-pulse-glow">

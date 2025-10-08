@@ -14,6 +14,12 @@ import {
   LifeBuoy,
   Handshake,
   Info,
+  Plane,
+  Train,
+  Bus,
+  ArrowDown,
+  Navigation,
+  Car,
 } from "lucide-react";
 import { FaLinkedin, FaYoutube, FaInstagram, FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -248,6 +254,261 @@ const Contact = () => {
                   );
                 })}
               </div>
+            </motion.div>
+
+            {/* How to Reach Us Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-12"
+            >
+              <h2 className="text-3xl font-bold font-poppins mb-8 text-center">
+                How to Reach <span className="text-gradient">RGUKT Srikakulam</span>
+              </h2>
+
+              {/* Location Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="mb-8"
+              >
+                <Card className="glass-card border border-white/10 overflow-hidden relative">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-60"></div>
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <MapPin className="h-7 w-7 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                    <h3 className="text-xl font-semibold mb-3 text-primary flex items-center">
+                      🏫 Campus Location
+                    </h3>
+                    <div className="bg-background/50 p-4 rounded-lg border border-white/5">
+                    <p className="text-muted-foreground leading-relaxed">
+                    <strong>Rajiv Gandhi University of Knowledge Technologies (RGUKT) – Srikakulam</strong><br />
+                    SM Puram (Village), Etcherla (Mandal)<br />
+                    Srikakulam District, Andhra Pradesh – 532410
+                    </p>
+                    </div>
+                    </div>
+                  </div>
+                </CardContent>
+                </Card>
+              </motion.div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* By Air */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  whileHover={{ y: -5 }}
+                >
+                <Card className="glass-card border border-white/10 overflow-hidden relative group h-full">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-sky-500 opacity-50"></div>
+                <CardContent className="p-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                <Plane className="h-8 w-8 text-blue-500" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-center text-blue-600 dark:text-blue-400">✈️ By Air</h3>
+
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-blue-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-blue-600">1</span>
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Fly to Vishakapatnam Airport</p>
+                    <p className="text-xs text-muted-foreground">VTZ - ~100 km from campus</p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <ArrowDown className="h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-blue-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-blue-600">2</span>
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Hire Cab to RCT Complex</p>
+                    <p className="text-xs text-muted-foreground">Reach Vishakapatnam RCT Complex</p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <ArrowDown className="h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-blue-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Bus className="h-3 w-3 text-blue-600" />
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Take Srikakulam Bus</p>
+                    <p className="text-xs text-muted-foreground">Get dropped in Chilakapalem</p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <ArrowDown className="h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-blue-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Car className="h-3 w-3 text-blue-600" />
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Hire Auto to Campus</p>
+                    <p className="text-xs text-muted-foreground">Reach RGUKT SKLM (SM Puram)</p>
+                    </div>
+                  </div>
+                </div>
+                </CardContent>
+                </Card>
+                </motion.div>
+
+                {/* By Train */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  whileHover={{ y: -5 }}
+                >
+                <Card className="glass-card border border-white/10 overflow-hidden relative group h-full">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500 opacity-50"></div>
+                <CardContent className="p-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                <Train className="h-8 w-8 text-green-500" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-center text-green-600 dark:text-green-400">🚆 By Train</h3>
+
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-green-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-green-600">1</span>
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-green-700 dark:text-green-300">Reach Srikakulam Station</p>
+                    <p className="text-xs text-muted-foreground">Amadalavalasa (from anywhere)</p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <ArrowDown className="h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-green-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Car className="h-3 w-3 text-green-600" />
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-green-700 dark:text-green-300">Auto to Chilakapalem</p>
+                    <p className="text-xs text-muted-foreground">~15 km from station</p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <ArrowDown className="h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-green-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Navigation className="h-3 w-3 text-green-600" />
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-green-700 dark:text-green-300">Auto to IIIT SM Puram</p>
+                    <p className="text-xs text-muted-foreground">Final destination</p>
+                    </div>
+                  </div>
+                </div>
+                </CardContent>
+                </Card>
+                </motion.div>
+
+                {/* By Road */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  whileHover={{ y: -5 }}
+                >
+                <Card className="glass-card border border-white/10 overflow-hidden relative group h-full">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-red-500 opacity-50"></div>
+                <CardContent className="p-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                <Bus className="h-8 w-8 text-orange-500" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-center text-orange-600 dark:text-orange-400">🚌 By Road</h3>
+
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-orange-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-orange-600">1</span>
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-orange-700 dark:text-orange-300">APSRTC to Srikakulam</p>
+                    <p className="text-xs text-muted-foreground">From anywhere in Andhra Pradesh</p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <ArrowDown className="h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-orange-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Navigation className="h-3 w-3 text-orange-600" />
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-orange-700 dark:text-orange-300">Reach Etcherla</p>
+                    <p className="text-xs text-muted-foreground">Via NH-16 highway</p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <ArrowDown className="h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-orange-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Car className="h-3 w-3 text-orange-600" />
+                    </div>
+                    <div>
+                    <p className="text-sm font-medium text-orange-700 dark:text-orange-300">Auto to IIIT SKLM</p>
+                    <p className="text-xs text-muted-foreground">SM Puram campus</p>
+                    </div>
+                  </div>
+                </div>
+                </CardContent>
+                </Card>
+                </motion.div>
+              </div>
+
+              {/* Additional Info */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="mt-8"
+              >
+                <Card className="glass-card border border-white/10 overflow-hidden">
+                <CardContent className="p-6 text-center">
+                <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <Info className="h-5 w-5 text-primary" />
+                </div>
+                <h4 className="font-semibold mb-2 text-primary">Travel Tips</h4>
+                <p className="text-sm text-muted-foreground">
+                GPS coordinates: <strong>18.2949° N, 83.8938° E</strong><br />
+                Best time to travel: Early morning or evening to avoid peak heat<br />
+                Keep campus contact number handy for any assistance
+                </p>
+                </CardContent>
+                </Card>
+              </motion.div>
             </motion.div>
 
             {/* Contact Form */}
