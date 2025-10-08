@@ -364,6 +364,9 @@ const Register = () => {
                       placeholder="Enter your full name"
                       required
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Note: This name will be considered for certificates.
+                    </p>
                   </div>
                   <div>
                     <Label htmlFor="email">Email *</Label>

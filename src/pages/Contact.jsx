@@ -88,32 +88,11 @@ const Contact = () => {
       action: "mailto:support.quantum@rgukt.in",
     },
     {
-      icon: Users,
-      title: "Team & Volunteers",
-      description: "Internal coordination & volunteer onboarding",
-      contact: "team.quantum@rgukt.in",
-      action: "mailto:team.quantum@rgukt.in",
-    },
-    {
-      icon: Handshake,
-      title: "Partnerships",
-      description: "Sponsor and collaborator outreach",
-      contact: "sponsors.quantum@rgukt.in",
-      action: "mailto:sponsors.quantum@rgukt.in",
-    },
-    {
-      icon: LifeBuoy,
-      title: "Technical Support",
-      description: "Platform or access issues",
-      contact: "quantum@rgukt.in",
-      action: "mailto:quantum@rgukt.in",
-    },
-    {
-      icon: Info,
-      title: "Information Desk",
-      description: "Media, press, and general info",
-      contact: "info.quantum@rgukt.in",
-      action: "mailto:info.quantum@rgukt.in",
+      icon: MapPin,
+      title: "Visit Us",
+      description: "RGUKT Srikakulam Campus",
+      contact: "Srikakulam, Andhra Pradesh, India",
+      action: "https://maps.app.goo.gl/3YQe1nMD5zfYcNfs7",
     },
   ];
 
@@ -207,6 +186,7 @@ const Contact = () => {
                         </p>
                         <a
                           href={method.action}
+                          target="__blank"
                           className="text-primary hover:text-primary-hover transition-colors font-medium"
                         >
                           {method.contact}

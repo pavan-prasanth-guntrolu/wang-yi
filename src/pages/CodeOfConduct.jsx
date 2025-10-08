@@ -37,7 +37,8 @@ const CodeOfConduct = () => {
               </div>
               <p className="text-muted-foreground leading-relaxed">
                 We follow a zero-tolerance Code of Conduct. Respect everyone —
-                harassment is not tolerated.
+                harassment is not tolerated. Report incidents to
+                qiskit.fallfest@rguktsklm.ac.in.
               </p>
             </CardContent>
           </Card>

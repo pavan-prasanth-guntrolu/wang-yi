@@ -527,6 +527,35 @@ const Ambassador = () => {
                     </div>
                   </div>
                 </div>
+                {/* Google Docs Button */}
+                <div className="text-center flex justify-around">
+                  <Button
+                    type="button"
+                    onClick={() =>
+                      window.open(
+                        "https://docs.google.com/document/d/1kpouP4HGlx3O1mStsjYd1PmI-D9nJmtnU-B1T1ZKIjk/edit?tab=t.0",
+                        "_blank"
+                      )
+                    }
+                    className="mt-6 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition"
+                  >
+                    Click here for more
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() =>
+                      window.open(
+                        "https://docs.google.com/document/d/1ytp8mWue8s0z7S1zNkGMJqqHqpkHlu3Po3S947bwG80/edit?tab=t.0",
+                        "_blank"
+                      )
+                    }
+                    className="mt-6 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition"
+                  >
+                    Click here for more
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
 
                 <Button
                   type="submit"
