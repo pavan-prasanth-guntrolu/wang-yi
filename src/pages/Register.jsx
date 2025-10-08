@@ -123,6 +123,7 @@ const Register = () => {
     agreeUpdates: false,
     country: "",
     state: "",
+    gender: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -179,6 +180,7 @@ const Register = () => {
       "branch",
       "attendanceMode",
       "country",
+      "gender",
     ];
     if (formData.country === "India") requiredFields.push("state");
 
@@ -226,6 +228,7 @@ const Register = () => {
           fullName: formData.fullName,
           email: formData.email,
           phone: formData.phone,
+          gender: formData.gender,
           institution: formData.institution,
           year: formData.year,
           branch: formData.branch,
@@ -366,6 +369,41 @@ const Register = () => {
                     placeholder="+91 XXXXX XXXXX"
                     required
                   />
+                </div>
+
+                {/* Gender */}
+                <div>
+                  <Label htmlFor="gender">Gender *</Label>
+                  <Select
+                    value={formData.gender}
+                    onValueChange={(value) =>
+                      handleInputChange("gender", value)
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        value="Male"
+                        className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                      >
+                        Male
+                      </SelectItem>
+                      <SelectItem
+                        value="Female"
+                        className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                      >
+                        Female
+                      </SelectItem>
+                      <SelectItem
+                        value="Other"
+                        className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                      >
+                        Other
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Country & State */}
