@@ -1,17 +1,6 @@
 import { motion } from "framer-motion";
 import { Atom, Users, Globe, Trophy, BookOpen, Zap } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Globe,
-  Rocket,
-  Users,
-  Zap,
-  Star,
-  Cpu,
-  Award,
-  Lightbulb,
-  Gift,
-} from "lucide-react";
 
 const About = () => {
   const highlights = [
