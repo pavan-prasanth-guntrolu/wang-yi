@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
-import { Shield, Users, AlertTriangle, Mail } from "lucide-react";
+import { Shield, Users, AlertTriangle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 const CodeOfConduct = () => {
   return (
@@ -36,7 +35,7 @@ const CodeOfConduct = () => {
                 <AlertTriangle className="w-6 h-6 text-red-500 mr-3" />
                 <h2 className="text-xl font-semibold">Zero Tolerance Policy</h2>
               </div>
-              <p className="text-muted-foreground leading-relaxed mb-6">
+              <p className="text-muted-foreground leading-relaxed">
                 We follow a zero-tolerance Code of Conduct. Respect everyone —
                 harassment is not tolerated. Report incidents to
                 qiskit.fallfest@rguktsklm.ac.in.

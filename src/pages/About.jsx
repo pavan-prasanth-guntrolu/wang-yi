@@ -43,12 +43,51 @@ const About = () => {
   ];
 
   const objectives = [
-    "Introduce students to quantum computing concepts and Qiskit framework",
-    "Provide hands-on experience with quantum algorithms and applications",
-    "Foster collaboration and innovation through hackathon challenges",
-    "Build a strong quantum computing community at RGUKT Srikakulam",
-    "Connect students with quantum computing professionals and researchers",
-    "Prepare students for careers in quantum technology and research",
+    {
+      title: "Promote Awareness of Quantum Technologies",
+      desc: "Inspire curiosity and understanding of the potential and impact of Quantum Technologies (QT) among students and enthusiasts.",
+      link: "https://rgukt.in",
+    },
+    {
+      title: "Empower Students to Pursue Quantum Studies",
+      desc: "Build confidence and foundational knowledge that motivate students to explore learning and research opportunities in QT.",
+      link: "https://rgukt.in",
+    },
+    {
+      title: "Leverage Quantum Technologies for Sustainable Development",
+      desc: "Highlight and explore how quantum innovations can address global challenges and contribute to sustainable development goals.",
+      link: "https://sdgs.un.org/goals",
+    },
+    {
+      title: "Foster Career Opportunities in Quantum Computing",
+      desc: "Connect participants to pathways, mentors, and resources that support career advancement in the quantum domain.",
+      link: "https://rgukt.in",
+    },
+    {
+      title: "Showcase Quantum Innovation with Qiskit",
+      desc: "Explore advancements, hands-on learning, and practical applications using Qiskit to strengthen technical proficiency in quantum computing.",
+      link: "https://qiskit.org",
+    },
+    {
+      title: "Contribute to India’s National Quantum Mission (NQM)",
+      desc: "Align student innovation and community-driven learning with the goals of the NQM to support India’s growing quantum ecosystem.",
+      link: "https://dst.gov.in/national-quantum-mission",
+    },
+    {
+      title: "Develop Local Talent for Amaravati Quantum Valley",
+      desc: "Cultivate and connect emerging talent in the region to contribute to the vision of Amaravati as a hub for quantum innovation.",
+      link: "https://aqv.in",
+    },
+    {
+      title: "Celebrate the International Year of Quantum (IYQ)",
+      desc: "Join global celebrations that recognize progress, collaboration, and discovery in the field of quantum technologies.",
+      link: "https://quantum2025.org",
+    },
+    {
+      title: "✨ A Surprise Awaits!",
+      desc: "Something special is coming soon — stay tuned to discover it!",
+      link: "/surprise",
+    },
   ];
 
   return (
@@ -143,7 +182,7 @@ const About = () => {
                     viewport={{ once: true }}
                     whileHover={{ y: -5 }}
                   >
-                    <Card className="glass-card border border-white/10 h-full">
+                    <Card className="glass-card border border-white/10 h-full transition-all duration-300 hover:border-primary/30 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)]">
                       <CardContent className="p-6">
                         <motion.div
                           className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4"
@@ -165,43 +204,48 @@ const About = () => {
             </div>
           </motion.div>
 
-          {/* Objectives */}
+          {/* Objectives Section - 3x3 Grid */}
           <motion.div
-            className="max-w-4xl mx-auto"
+            className="max-w-6xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="glass-card p-8 lg:p-12 rounded-2xl border border-white/10">
-              <h2 className="text-3xl lg:text-4xl font-bold font-poppins mb-8 text-center">
-                Our Objectives
-              </h2>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {objectives.map((objective, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-start space-x-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="flex-shrink-0 w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center mt-1">
-                      <div className="w-2 h-2 bg-primary rounded-full" />
-                    </div>
+            <h2 className="text-3xl lg:text-4xl font-bold font-poppins mb-12 text-center">
+              Our Objectives
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {objectives.map((obj, index) => (
+                <motion.a
+                  key={index}
+                  href={obj.link}
+                  target={obj.link.startsWith("http") ? "_blank" : "_self"}
+                  rel="noopener noreferrer"
+                  className="block group"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="glass-card h-full p-6 rounded-2xl border border-white/10 transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-[0_0_25px_rgba(0,255,255,0.3)]">
+                    <h3 className="text-xl font-semibold mb-3 text-white">
+                      {obj.title}
+                    </h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      {objective}
+                      {obj.desc}
                     </p>
-                  </motion.div>
-                ))}
-              </div>
+                  </div>
+                </motion.a>
+              ))}
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* IBM Partnership */}
+      {/* IBM Partnership Section */}
       <section className="py-20 lg:py-24 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -231,7 +275,7 @@ const About = () => {
                 IBM Qiskit is the world's most popular quantum computing
                 framework, used by researchers, students, and professionals
                 worldwide. Through this partnership, we bring world-class
-                quantum education directly to Rgukt Srikakulam.
+                quantum education directly to RGUKT Srikakulam.
               </p>
             </div>
           </motion.div>

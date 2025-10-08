@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { AuthProvider } from "@/components/AuthProvider";
-import { supabase } from "@/lib/supabase";
 
 // Core components
 import Header from "@/components/Header";
@@ -35,6 +34,7 @@ const Login = lazy(() => import("@/pages/Login"));
 const Refer = lazy(() => import("@/pages/Refer"));
 const Team = lazy(() => import("@/pages/Team"));
 const Supporters = lazy(() => import("@/pages/Supporters"));
+
 const Secret = lazy(() => import("@/pages/Secret"));
 const Ambassador = lazy(() => import("@/pages/Ambassador"));
 const GuestSpeaker = lazy(() => import("@/pages/GuestSpeaker"));
@@ -71,41 +71,6 @@ const App = () => {
     };
   }, []);
 
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    const checkAdmin = async () => {
-      const { data: user } = await supabase.auth.getUser();
-      console.log("User Data:", user.user.email);
-      if (
-        [
-          "pavanprasanth48850@gmail.com",
-          "nikkikatnikkil44@gmail.com",
-          "s210214@rguktsklm.ac.in",
-          "johnrajuch6@gmail.com",
-          "kasimvalinspl@gmail.com",
-          "prabhasvemula7@gmail.com",
-          "neesh235@gmail.com",
-          "anushasanapathi549@gmail.com",
-          "veerarohit789@gmail.com",
-          "s220083@rguktsklm.ac.in",
-          "s220505@rguktsklm.ac.in",
-          "s220556@rguktsklm.ac.in",
-          "s210664@rguktsklm.ac.in",
-          "s210894@rguktsklm.ac.in",
-          "praveen14641@gmail.com",
-          "johnbabuchaduvula0@gmail.com",
-          "s210755@rguktsklm.ac.in",
-          "kimidigunasree7@gmail.com",
-        ].includes(user.user.email.toLowerCase())
-      ) {
-        setIsAdmin(true);
-      }
-    };
-
-    checkAdmin();
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="qiskit-fest-theme">
@@ -137,24 +102,7 @@ const App = () => {
                         <Route path="/hackathon" element={<Hackathon />} />
                         <Route path="/materials" element={<Materials />} />
                         <Route path="/secret14641" element={<Secret />} />
-                        <Route
-                          path="/secret"
-                          element={
-                            isAdmin ? (
-                              <Secret />
-                            ) : (
-                              <div className="min-h-screen flex items-center justify-center bg-background text-primary-foreground text-white">
-                                <h1 className="text-4xl font-bold">
-                                  Access Denied
-                                </h1>
-                                <br />
-                                <p className="text-lg mt-4">
-                                  You do not have permission to view this page.
-                                </p>
-                              </div>
-                            )
-                          }
-                        />
+                        <Route path="/secret" element={<Secret />} />
                         <Route path="/sponsors" element={<Sponsors />} />
                         <Route path="/organizers" element={<Organizers />} />
                         <Route path="/supporters" element={<Supporters />} />

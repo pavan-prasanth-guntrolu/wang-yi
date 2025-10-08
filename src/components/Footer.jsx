@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Github,
-  Twitter,
   Linkedin,
   Mail,
-  ExternalLink,
-  Atom,
+  MessageCircle,
+  Instagram,
+  Youtube,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { AddressMap } from "./AddressMap";
+import { FaXTwitter } from "react-icons/fa6";
 import hundredYears from "../../Graphics/Emojis/Theme.png";
 
 const Footer = () => {
@@ -29,26 +27,38 @@ const Footer = () => {
 
   const socialLinks = [
     {
-      name: "GitHub",
-      href: "",
-      icon: Github,
-      label: "View source code on GitHub",
+      name: "X (Twitter)",
+      href: "https://x.com/rguktsklm_qff25?t=biaMBN4M9_3vEKNrAH7Hxg&s=08",
+      icon: FaXTwitter,
+      label: "Follow us on X",
     },
     {
-      name: "Twitter",
-      href: "",
-      icon: Twitter,
-      label: "Follow us on Twitter",
+      name: "YouTube",
+      href: "https://www.youtube.com/@rguktsklm_qff2025",
+      icon: Youtube,
+      label: "Subscribe on YouTube",
     },
     {
       name: "LinkedIn",
-      href: "",
+      href: "https://www.linkedin.com/company/rguktsklm-qff2025/",
       icon: Linkedin,
       label: "Connect on LinkedIn",
     },
     {
+      name: "Instagram",
+      href: "https://www.instagram.com/rguktsklm_qff2025/",
+      icon: Instagram,
+      label: "Follow us on Instagram",
+    },
+    {
+      name: "Discord",
+      href: "https://discord.gg/hHfrUHVZqZ",
+      icon: MessageCircle,
+      label: "Join us on Discord",
+    },
+    {
       name: "Email",
-      href: "mailto:",
+      href: "mailto:qiskitfallfest25@rgukt.in",
       icon: Mail,
       label: "Send us an email",
     },
@@ -83,7 +93,7 @@ const Footer = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
             {/* Brand Section */}
             <motion.div variants={itemVariants} className="lg:col-span-1">
               <Link to="/" className="flex items-center space-x-3 mb-4 group">
@@ -202,8 +212,6 @@ const Footer = () => {
                 </a>
               </div>
             </motion.div> */}
-
-            <AddressMap />
           </div>
 
           {/* Bottom Section */}

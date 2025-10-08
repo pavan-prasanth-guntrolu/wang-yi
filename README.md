@@ -77,9 +77,9 @@ This project includes placeholder values that need to be replaced with actual in
 
 ### 1. Contact Information
 Replace in all files:
-- `REPLACE_WITH_EMAIL` → your-email@domain.com
-- `REPLACE_WITH_PHONE` → your phone number
-- `contact@REPLACE_WITH_EMAIL` → actual contact email
+- `REPLACE_WITH_EMAIL` → qiskitfallfest25@rgukt.in
+- `REPLACE_WITH_PHONE` → +91 93928 10073
+- `contact@REPLACE_WITH_EMAIL` → contact.quantum@rgukt.in
 
 ### 2. Registration System
 In `src/pages/Register.jsx`:
@@ -150,7 +150,7 @@ The project includes a GitHub Actions workflow that automatically builds and dep
 - Presentation 25%
 
 ### Code of Conduct (Exact Text Required)
-"We follow a zero-tolerance Code of Conduct. Respect everyone — harassment is not tolerated. Report incidents to contact@REPLACE_WITH_EMAIL."
+"We follow a zero-tolerance Code of Conduct. Respect everyone — harassment is not tolerated. Report incidents to contact.quantum@rgukt.in."
 
 ### Registration Success Message (Exact Text Required)
 "Thanks! You're registered for Qiskit Fall Fest 2025 — check your email for details."
@@ -171,7 +171,7 @@ This project is created for educational purposes as part of the Qiskit Fall Fest
 
 For technical issues or questions:
 - Create an issue on GitHub
-- Contact the organizing team at contact@REPLACE_WITH_EMAIL
+- Contact the organizing team at contact.quantum@rgukt.in
 - Check the FAQ section on the website
 
 ---

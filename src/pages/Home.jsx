@@ -67,6 +67,7 @@ const Home = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
+      className="space-y-0"
     >
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden hero-gradient">
@@ -330,6 +331,62 @@ const Home = () => {
                   <ExternalLink className="ml-2 h-4 w-4" />
                 </Button>
               </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Visit Us Section */}
+      <section className="py-20 lg:py-24 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="max-w-5xl mx-auto glass-card border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              <div className="p-8 lg:p-12 flex flex-col justify-center bg-gradient-to-br from-primary/10 via-background to-background">
+                <p className="text-sm uppercase tracking-widest text-primary font-semibold mb-3">
+                  Visit Us
+                </p>
+                <h2 className="text-3xl lg:text-4xl font-bold font-poppins text-foreground mb-4">
+                  Experience Qiskit Fall Fest on Campus
+                </h2>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  Join us at the RGUKT Srikakulam campus for an unforgettable week of
+                  quantum computing workshops, talks, and hands-on learning.
+                </p>
+                <div className="space-y-3 text-sm text-muted-foreground">
+                  <p className="flex flex-col">
+                    <span className="font-semibold text-foreground">Location</span>
+                    RGUKT IIIT Srikakulam, Etcherla, Andhra Pradesh 532402, India.
+                  </p>
+                  <p className="flex flex-col">
+                    <span className="font-semibold text-foreground">Need Directions?</span>
+                    Tap the map to open Google Maps and plan your visit.
+                  </p>
+                </div>
+                <div className="mt-8">
+                  <Link to="https://maps.app.goo.gl/YLUxTu3hwPyoLS3h9" target="_blank" rel="noopener noreferrer">
+                    <Button size="lg" className="btn-quantum px-6 py-3 text-base font-semibold">
+                      Get Directions
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+              <div className="relative h-[320px] lg:h-full">
+                <iframe
+                  title="RGUKT Srikakulam Map"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1392.4391814017545!2d83.82543251279886!3d18.288390024055417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a3c13503f331c41%3A0xb4212620d053a81f!2sRGUKT%20IIIT%20SKLM!5e0!3m2!1sen!2sin!4v1758213264317!5m2!1sen!2sin"
+                  className="w-full h-full border-0"
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
             </div>
           </motion.div>
         </div>

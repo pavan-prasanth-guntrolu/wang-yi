@@ -52,10 +52,40 @@ const Refer = () => {
         setHasRegistration(true);
         setReferralCode(registration.referral_code);
 
+        console.log("Registration data:", registration);
+        console.log("referred_by:", registration.referred_by);
+        console.log("referrer:", registration.referrer);
+
         // Set the current friend's referral code if it exists
-        if (registration.referrer && registration.referrer.referral_code) {
-          setCurrentFriendReferralCode(registration.referrer.referral_code);
-          setFriendReferralCode(registration.referrer.referral_code);
+        // Check if user has been referred by someone
+        if (registration.referred_by) {
+          // If referrer data is available from the join
+          if (registration.referrer && registration.referrer.referral_code) {
+            console.log("Setting referral code from join:", registration.referrer.referral_code);
+            setCurrentFriendReferralCode(registration.referrer.referral_code);
+            setFriendReferralCode(registration.referrer.referral_code);
+          } else {
+            // Fallback: fetch referrer's code separately if join didn't work
+            console.log("Fetching referrer data separately for ID:", registration.referred_by);
+            const { data: referrerData } = await supabase
+              .from("registrations")
+              .select("referral_code")
+              .eq("id", registration.referred_by)
+              .single();
+            
+            console.log("Referrer data fetched:", referrerData);
+            
+            if (referrerData && referrerData.referral_code) {
+              console.log("Setting referral code from separate fetch:", referrerData.referral_code);
+              setCurrentFriendReferralCode(referrerData.referral_code);
+              setFriendReferralCode(referrerData.referral_code);
+            }
+          }
+        } else {
+          // Clear the states if no referral code is set
+          console.log("No referred_by value, clearing referral codes");
+          setCurrentFriendReferralCode("");
+          setFriendReferralCode("");
         }
 
         const { data: referrals, error: referralsError } = await supabase
@@ -168,6 +198,16 @@ const Refer = () => {
   };
 
   const applyReferralCode = async () => {
+    // Check if referral code is already locked
+    if (currentFriendReferralCode) {
+      toast({
+        title: "Referral Code Locked",
+        description: "You have already applied a referral code. It cannot be changed.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!friendReferralCode.trim()) {
       toast({
         title: "Error",
@@ -217,7 +257,23 @@ const Refer = () => {
       }
 
       if (hasRegistration) {
-        // Update existing registration
+        // Check if user already has a referral code set
+        const { data: currentRegistration } = await supabase
+          .from("registrations")
+          .select("referred_by")
+          .eq("user_id", user.id)
+          .single();
+
+        if (currentRegistration && currentRegistration.referred_by) {
+          toast({
+            title: "Referral Code Locked",
+            description: "You have already applied a referral code. It cannot be changed.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        // Update existing registration only if no referral code exists
         const { error: updateError } = await supabase
           .from("registrations")
           .update({ referred_by: referredBy })
@@ -310,22 +366,30 @@ const Refer = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="friendReferralCode">Referral Code</Label>
+                  <Label htmlFor="friendReferralCode">
+                    Referral Code {currentFriendReferralCode && "🔒"}
+                  </Label>
                   <Input
                     id="friendReferralCode"
                     type="text"
                     value={friendReferralCode}
                     onChange={(e) => setFriendReferralCode(e.target.value)}
                     placeholder="Enter your friend's referral code"
-                    className="font-mono"
+                    className={`font-mono ${currentFriendReferralCode ? "bg-muted cursor-not-allowed" : ""}`}
+                    disabled={!!currentFriendReferralCode}
+                    readOnly={!!currentFriendReferralCode}
                   />
                 </div>
-                <Button onClick={applyReferralCode} className="w-full">
-                  Apply/Update Referral Code
+                <Button 
+                  onClick={applyReferralCode} 
+                  className="w-full"
+                  disabled={!!currentFriendReferralCode}
+                >
+                  {currentFriendReferralCode ? "Referral Code Locked" : "Apply Referral Code"}
                 </Button>
                 <p className="text-sm text-muted-foreground">
                   {currentFriendReferralCode
-                    ? "Update your friend's referral code if needed."
+                    ? "🔒 You have already been referred by someone and cannot be referred again."
                     : "Enter a referral code from a friend to earn rewards!"}
                 </p>
               </CardContent>
