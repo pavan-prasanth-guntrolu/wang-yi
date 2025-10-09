@@ -170,7 +170,10 @@ const Register = () => {
                 .eq("id", existing.referred_by)
                 .single();
               if (referrer) {
-                setFormData((prev) => ({ ...prev, referralCode: referrer.referral_code }));
+                setFormData((prev) => ({
+                  ...prev,
+                  referralCode: referrer.referral_code,
+                }));
               }
             }
           }
@@ -512,7 +515,9 @@ const Register = () => {
                     placeholder="Enter referral code if you have one"
                     disabled={isReferralCodeLocked}
                     readOnly={isReferralCodeLocked}
-                    className={isReferralCodeLocked ? "bg-muted cursor-not-allowed" : ""}
+                    className={
+                      isReferralCodeLocked ? "bg-muted cursor-not-allowed" : ""
+                    }
                   />
                   {isReferralCodeLocked && (
                     <p className="text-sm text-muted-foreground mt-1">
@@ -569,28 +574,28 @@ const Register = () => {
                           value="4th-year"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          4th-year
+                          4-th year
                         </SelectItem>
                         <SelectItem
-                          value="faculty"
+                          value="faculy"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          Faculty
+                          faculty
                         </SelectItem>
                         <SelectItem
                           value="masters"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          Masters
+                          masters
                         </SelectItem>
                         <SelectItem
                           value="phd"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          PhD
+                          Phd.
                         </SelectItem>
                         <SelectItem
-                          value="puc"
+                          value="PUC"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
                           PUC
@@ -599,13 +604,13 @@ const Register = () => {
                           value="school"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          School
+                          school
                         </SelectItem>
                         <SelectItem
                           value="other"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          Other
+                          other
                         </SelectItem>
                       </SelectContent>
                     </Select>
