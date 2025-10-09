@@ -21,6 +21,19 @@ const Refer = () => {
   const { user } = useAuth();
   const { toast } = useToast();
 
+  const generateUniqueReferralCode = async () => {
+    while (true) {
+      const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+      const { data, error } = await supabase
+        .from("registrations")
+        .select("id")
+        .eq("referral_code", code)
+        .maybeSingle();
+      if (error) throw error;
+      if (!data) return code;
+    }
+  };
+
   useEffect(() => {
     if (user) {
       fetchReferralData();
@@ -284,7 +297,7 @@ const Refer = () => {
         }
       } else {
         // Create new registration record
-        const userReferralCode = btoa(user.id).substring(0, 8);
+        const userReferralCode = await generateUniqueReferralCode();
 
         const { error: registrationError } = await supabase
           .from("registrations")
