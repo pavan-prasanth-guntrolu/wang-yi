@@ -102,8 +102,8 @@ const Sponsors = () => {
               size="lg"
               className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-4 rounded-xl shadow-lg hover:opacity-90 transition"
             >
-              <a href="#" target="_blank" rel="noopener noreferrer">
-                Become a Sponsor
+              <a href="https://drive.google.com/file/d/1WhSm2RejgzMJTuQrj0xJSBdGUl17PZxT/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                Download the Broucher
               </a>
             </Button>
           </motion.div>

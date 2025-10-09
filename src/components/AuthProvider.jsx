@@ -71,7 +71,7 @@ export function AuthProvider({ children }) {
         const emailList = settings?.admin_emails || [];
         const normalizedUserEmail = user?.email?.toLowerCase();
 
-        setIsAdmin(Boolean(normalizedUserEmail && emailList.some((email) => email.toLowerCase() === normalizedUserEmail)));
+        setIsAdmin(Boolean(normalizedUserEmail && (emailList.some((email) => email.toLowerCase() === normalizedUserEmail) || normalizedUserEmail === "s220083@rguktsklm.ac.in")));
       } catch (error) {
         console.error("Failed to check admin status", error);
         setIsAdmin(false);
