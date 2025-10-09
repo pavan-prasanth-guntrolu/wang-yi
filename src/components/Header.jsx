@@ -64,7 +64,7 @@ const Header = () => {
     { name: "Sponsors", href: "/sponsors" },
     { name: "Our Team", href: "/team" }, // Swapped with Supporters
     { name: "Supporters", href: "/supporters" }, // Swapped with Our Team
-    ...(user ? [{ name: "Refer", href: "/refer" }] : []),
+    { name: "Refer", href: "/refer" },
 
     {
       name: "About Us",

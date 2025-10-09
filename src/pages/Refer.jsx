@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Users, Copy, Share2, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,22 @@ const Refer = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  // Authentication guard
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Sign In Required</h1>
+          <p className="text-muted-foreground mb-4">
+            Please sign in to access the Refer page.
+          </p>
+          <Button onClick={() => navigate("/login")}>Sign In</Button>
+        </div>
+      </div>
+    );
+  }
 
   const generateUniqueReferralCode = async () => {
     while (true) {

@@ -10,6 +10,8 @@ import {
   Lock,
   Save,
   ArrowLeft,
+  Edit,
+  MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,6 +125,8 @@ const profileSchema = z.object({
 const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [profileData, setProfileData] = useState(null);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -167,6 +171,8 @@ const Profile = () => {
           if (data.attendance_mode) {
             setValue("attendanceMode", data.attendance_mode);
           }
+          // Store profile data for view mode
+          setProfileData(data);
         }
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -212,6 +218,12 @@ const Profile = () => {
         title: "Profile Updated",
         description: "Your profile has been successfully updated.",
       });
+      // Update profileData for view mode
+      setProfileData({
+        ...profileData,
+        ...updateData,
+      });
+      setEditMode(false);
     } catch (error) {
       console.error("Error updating profile:", error);
       toast({
@@ -269,269 +281,393 @@ const Profile = () => {
           <h1 className="text-3xl font-bold">My Profile</h1>
         </div>
 
-        {/* Profile Form */}
+        {/* Profile Content */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5" />
-              Update Your Details
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-5 w-5" />
+                {editMode ? "Update Your Details" : "My Profile"}
+              </CardTitle>
+              {!editMode && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditMode(true)}
+                  className="flex items-center gap-2"
+                >
+                  <Edit className="h-4 w-4" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Full Name */}
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name *</Label>
-                <Input
-                  id="fullName"
-                  {...register("fullName")}
-                  placeholder="Enter your full name"
-                />
-                {errors.fullName && (
-                  <p className="text-sm text-red-500">{errors.fullName.message}</p>
-                )}
-              </div>
-
-              {/* Email */}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  Email *
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  {...register("email")}
-                  placeholder="Enter your email"
-                />
-                {errors.email && (
-                  <p className="text-sm text-red-500">{errors.email.message}</p>
-                )}
-              </div>
-
-              {/* Phone */}
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  Phone Number *
-                </Label>
-                <Input
-                  id="phone"
-                  {...register("phone")}
-                  placeholder="Enter your phone number"
-                />
-                {errors.phone && (
-                  <p className="text-sm text-red-500">{errors.phone.message}</p>
-                )}
-              </div>
-
-              {/* Gender */}
-              <div className="space-y-2">
-                <Label htmlFor="gender">Gender *</Label>
-                <Controller
-                  name="gender"
-                  control={control}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your gender" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                        <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {errors.gender && (
-                  <p className="text-sm text-red-500">{errors.gender.message}</p>
-                )}
-              </div>
-
-              {/* Institution */}
-              <div className="space-y-2">
-                <Label htmlFor="institution" className="flex items-center gap-2">
-                  <Building className="h-4 w-4" />
-                  Institution/Organization *
-                </Label>
-                <Input
-                  id="institution"
-                  {...register("institution")}
-                  placeholder="Enter your institution"
-                />
-                {errors.institution && (
-                  <p className="text-sm text-red-500">{errors.institution.message}</p>
-                )}
-              </div>
-
-              {/* Year */}
-              <div className="space-y-2">
-                <Label htmlFor="year" className="flex items-center gap-2">
-                  <GraduationCap className="h-4 w-4" />
-                  Year/Level *
-                </Label>
-                <Controller
-                  name="year"
-                  control={control}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your year/level" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1st Year">1st Year</SelectItem>
-                        <SelectItem value="2nd Year">2nd Year</SelectItem>
-                        <SelectItem value="3rd Year">3rd Year</SelectItem>
-                        <SelectItem value="4th Year">4th Year</SelectItem>
-                        <SelectItem value="5th Year">5th Year</SelectItem>
-                        <SelectItem value="Masters">Masters</SelectItem>
-                        <SelectItem value="PhD">PhD</SelectItem>
-                        <SelectItem value="Post-Doc">Post-Doc</SelectItem>
-                        <SelectItem value="Faculty">Faculty</SelectItem>
-                        <SelectItem value="Industry Professional">Industry Professional</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {errors.year && (
-                  <p className="text-sm text-red-500">{errors.year.message}</p>
-                )}
-              </div>
-
-              {/* Branch */}
-              <div className="space-y-2">
-                <Label htmlFor="branch">Branch/Specialization *</Label>
-                <Input
-                  id="branch"
-                  {...register("branch")}
-                  placeholder="Enter your branch or specialization"
-                />
-                {errors.branch && (
-                  <p className="text-sm text-red-500">{errors.branch.message}</p>
-                )}
-              </div>
-
-              {/* Country */}
-              <div className="space-y-2">
-                <Label htmlFor="country">Country *</Label>
-                <Controller
-                  name="country"
-                  control={control}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your country" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country} value={country}>
-                            {country}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {errors.country && (
-                  <p className="text-sm text-red-500">{errors.country.message}</p>
-                )}
-              </div>
-
-              {/* State (only for India) */}
-              {watchedCountry === "India" && (
+            {editMode ? (
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Full Name */}
                 <div className="space-y-2">
-                  <Label htmlFor="state">State *</Label>
+                  <Label htmlFor="fullName">Full Name *</Label>
+                  <Input
+                    id="fullName"
+                    {...register("fullName")}
+                    placeholder="Enter your full name"
+                  />
+                  {errors.fullName && (
+                    <p className="text-sm text-red-500">{errors.fullName.message}</p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="flex items-center gap-2">
+                    <Mail className="h-4 w-4" />
+                    Email *
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    {...register("email")}
+                    placeholder="Enter your email"
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-red-500">{errors.email.message}</p>
+                  )}
+                </div>
+
+                {/* Phone */}
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="flex items-center gap-2">
+                    <Phone className="h-4 w-4" />
+                    Phone Number *
+                  </Label>
+                  <Input
+                    id="phone"
+                    {...register("phone")}
+                    placeholder="Enter your phone number"
+                  />
+                  {errors.phone && (
+                    <p className="text-sm text-red-500">{errors.phone.message}</p>
+                  )}
+                </div>
+
+                {/* Gender */}
+                <div className="space-y-2">
+                  <Label htmlFor="gender">Gender *</Label>
                   <Controller
-                    name="state"
+                    name="gender"
                     control={control}
                     render={({ field }) => (
                       <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select your state" />
+                          <SelectValue placeholder="Select your gender" />
                         </SelectTrigger>
                         <SelectContent>
-                          {indianStates.map((state) => (
-                            <SelectItem key={state} value={state}>
-                              {state}
+                          <SelectItem value="male">Male</SelectItem>
+                          <SelectItem value="female">Female</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.gender && (
+                    <p className="text-sm text-red-500">{errors.gender.message}</p>
+                  )}
+                </div>
+
+                {/* Institution */}
+                <div className="space-y-2">
+                  <Label htmlFor="institution" className="flex items-center gap-2">
+                    <Building className="h-4 w-4" />
+                    Institution/Organization *
+                  </Label>
+                  <Input
+                    id="institution"
+                    {...register("institution")}
+                    placeholder="Enter your institution"
+                  />
+                  {errors.institution && (
+                    <p className="text-sm text-red-500">{errors.institution.message}</p>
+                  )}
+                </div>
+
+                {/* Year */}
+                <div className="space-y-2">
+                  <Label htmlFor="year" className="flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4" />
+                    Year/Level *
+                  </Label>
+                  <Controller
+                    name="year"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your year/level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1st Year">1st Year</SelectItem>
+                          <SelectItem value="2nd Year">2nd Year</SelectItem>
+                          <SelectItem value="3rd Year">3rd Year</SelectItem>
+                          <SelectItem value="4th Year">4th Year</SelectItem>
+                          <SelectItem value="5th Year">5th Year</SelectItem>
+                          <SelectItem value="Masters">Masters</SelectItem>
+                          <SelectItem value="PhD">PhD</SelectItem>
+                          <SelectItem value="Post-Doc">Post-Doc</SelectItem>
+                          <SelectItem value="Faculty">Faculty</SelectItem>
+                          <SelectItem value="Industry Professional">Industry Professional</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.year && (
+                    <p className="text-sm text-red-500">{errors.year.message}</p>
+                  )}
+                </div>
+
+                {/* Branch */}
+                <div className="space-y-2">
+                  <Label htmlFor="branch">Branch/Specialization *</Label>
+                  <Input
+                    id="branch"
+                    {...register("branch")}
+                    placeholder="Enter your branch or specialization"
+                  />
+                  {errors.branch && (
+                    <p className="text-sm text-red-500">{errors.branch.message}</p>
+                  )}
+                </div>
+
+                {/* Country */}
+                <div className="space-y-2">
+                  <Label htmlFor="country">Country *</Label>
+                  <Controller
+                    name="country"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your country" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {countries.map((country) => (
+                            <SelectItem key={country} value={country}>
+                              {country}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     )}
                   />
-                  {errors.state && (
-                    <p className="text-sm text-red-500">{errors.state.message}</p>
+                  {errors.country && (
+                    <p className="text-sm text-red-500">{errors.country.message}</p>
                   )}
                 </div>
-              )}
 
-              {/* Attendance Mode */}
-              <div className="space-y-2">
-                <Label htmlFor="attendanceMode">Preferred Attendance Mode *</Label>
-                <Controller
-                  name="attendanceMode"
-                  control={control}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select attendance mode" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="online">Online</SelectItem>
-                        <SelectItem value="offline">Offline</SelectItem>
-                      </SelectContent>
-                    </Select>
+                {/* State (only for India) */}
+                {watchedCountry === "India" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="state">State *</Label>
+                    <Controller
+                      name="state"
+                      control={control}
+                      render={({ field }) => (
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select your state" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {indianStates.map((state) => (
+                              <SelectItem key={state} value={state}>
+                                {state}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    {errors.state && (
+                      <p className="text-sm text-red-500">{errors.state.message}</p>
+                    )}
+                  </div>
+                )}
+
+                {/* Attendance Mode */}
+                <div className="space-y-2">
+                  <Label htmlFor="attendanceMode">Preferred Attendance Mode *</Label>
+                  <Controller
+                    name="attendanceMode"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select attendance mode" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="online">Online</SelectItem>
+                          <SelectItem value="offline">Offline</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.attendanceMode && (
+                    <p className="text-sm text-red-500">{errors.attendanceMode.message}</p>
                   )}
-                />
-                {errors.attendanceMode && (
-                  <p className="text-sm text-red-500">{errors.attendanceMode.message}</p>
-                )}
-              </div>
+                </div>
 
-              {/* Experience */}
-              <div className="space-y-2">
-                <Label htmlFor="experience">Experience with Quantum Computing</Label>
-                <Textarea
-                  id="experience"
-                  {...register("experience")}
-                  placeholder="Tell us about your experience with quantum computing (optional)"
-                  rows={3}
-                />
-              </div>
+                {/* Experience */}
+                <div className="space-y-2">
+                  <Label htmlFor="experience">Experience with Quantum Computing</Label>
+                  <Textarea
+                    id="experience"
+                    {...register("experience")}
+                    placeholder="Tell us about your experience with quantum computing (optional)"
+                    rows={3}
+                  />
+                </div>
 
-              {/* Motivation */}
-              <div className="space-y-2">
-                <Label htmlFor="motivation">Motivation for Joining</Label>
-                <Textarea
-                  id="motivation"
-                  {...register("motivation")}
-                  placeholder="What motivates you to join Qiskit Fall Fest? (optional)"
-                  rows={3}
-                />
-              </div>
+                {/* Motivation */}
+                <div className="space-y-2">
+                  <Label htmlFor="motivation">Motivation for Joining</Label>
+                  <Textarea
+                    id="motivation"
+                    {...register("motivation")}
+                    placeholder="What motivates you to join Qiskit Fall Fest? (optional)"
+                    rows={3}
+                  />
+                </div>
 
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={updating}
-                className="w-full flex items-center gap-2"
-              >
-                {updating ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-                    Updating...
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4" />
-                    Update Profile
-                  </>
-                )}
-              </Button>
-            </form>
+                {/* Submit Button */}
+                <div className="flex gap-4">
+                  <Button
+                    type="submit"
+                    disabled={updating}
+                    className="flex items-center gap-2"
+                  >
+                    {updating ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                        Updating...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4" />
+                        Update Profile
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setEditMode(false)}
+                    disabled={updating}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              profileData && (
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Full Name */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground">Full Name</Label>
+                      <p className="text-lg font-semibold">{profileData.fullName || "Not provided"}</p>
+                    </div>
+
+                    {/* Email */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <Mail className="h-4 w-4" />
+                        Email
+                      </Label>
+                      <p className="text-lg">{profileData.email || "Not provided"}</p>
+                    </div>
+
+                    {/* Phone */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <Phone className="h-4 w-4" />
+                        Phone Number
+                      </Label>
+                      <p className="text-lg">{profileData.phone || "Not provided"}</p>
+                    </div>
+
+                    {/* Gender */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground">Gender</Label>
+                      <p className="text-lg capitalize">{profileData.gender || "Not provided"}</p>
+                    </div>
+
+                    {/* Institution */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <Building className="h-4 w-4" />
+                        Institution/Organization
+                      </Label>
+                      <p className="text-lg">{profileData.institution || "Not provided"}</p>
+                    </div>
+
+                    {/* Year */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <GraduationCap className="h-4 w-4" />
+                        Year/Level
+                      </Label>
+                      <p className="text-lg">{profileData.year || "Not provided"}</p>
+                    </div>
+
+                    {/* Branch */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground">Branch/Specialization</Label>
+                      <p className="text-lg">{profileData.branch || "Not provided"}</p>
+                    </div>
+
+                    {/* Attendance Mode */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground">Preferred Attendance Mode</Label>
+                      <p className="text-lg capitalize">{profileData.attendance_mode || "Not provided"}</p>
+                    </div>
+
+                    {/* Country */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <MapPin className="h-4 w-4" />
+                        Country
+                      </Label>
+                      <p className="text-lg">{profileData.country || "Not provided"}</p>
+                    </div>
+
+                    {/* State (only for India) */}
+                    {profileData.country === "India" && (
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-muted-foreground">State</Label>
+                        <p className="text-lg">{profileData.state || "Not provided"}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Experience */}
+                  {profileData.experience && (
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground">Experience with Quantum Computing</Label>
+                      <p className="text-lg whitespace-pre-wrap">{profileData.experience}</p>
+                    </div>
+                  )}
+
+                  {/* Motivation */}
+                  {profileData.motivation && (
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-muted-foreground">Motivation for Joining</Label>
+                      <p className="text-lg whitespace-pre-wrap">{profileData.motivation}</p>
+                    </div>
+                  )}
+                </div>
+              )
+            )}
           </CardContent>
         </Card>
       </div>
