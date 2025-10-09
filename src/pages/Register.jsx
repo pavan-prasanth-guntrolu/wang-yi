@@ -548,28 +548,64 @@ const Register = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem
-                          value="E1"
+                          value="1st-year"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          E1
+                          1st-year
                         </SelectItem>
                         <SelectItem
-                          value="E2"
+                          value="2nd-year"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          E2
+                          2nd-year
                         </SelectItem>
                         <SelectItem
-                          value="E3"
+                          value="3rd-year"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          E3
+                          3rd-year
                         </SelectItem>
                         <SelectItem
-                          value="E4"
+                          value="4th-year"
                           className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
                         >
-                          E4
+                          4th-year
+                        </SelectItem>
+                        <SelectItem
+                          value="faculty"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          Faculty
+                        </SelectItem>
+                        <SelectItem
+                          value="masters"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          Masters
+                        </SelectItem>
+                        <SelectItem
+                          value="phd"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          PhD
+                        </SelectItem>
+                        <SelectItem
+                          value="puc"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          PUC
+                        </SelectItem>
+                        <SelectItem
+                          value="school"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          School
+                        </SelectItem>
+                        <SelectItem
+                          value="other"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          Other
                         </SelectItem>
                       </SelectContent>
                     </Select>
