@@ -223,6 +223,19 @@ const Register = () => {
     return true;
   };
 
+  const generateUniqueReferralCode = async () => {
+    while (true) {
+      const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+      const { data, error } = await supabase
+        .from("registrations")
+        .select("id")
+        .eq("referral_code", code)
+        .maybeSingle();
+      if (error) throw error;
+      if (!data) return code;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -230,7 +243,7 @@ const Register = () => {
     try {
       if (!user) return;
 
-      const referralCode = btoa(user.id).substring(0, 8);
+      const referralCode = await generateUniqueReferralCode();
       let referredBy = null;
       if (formData.referralCode) {
         const { data: referrer } = await supabase
