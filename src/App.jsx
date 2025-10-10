@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { AuthProvider } from "@/components/AuthProvider";
+import { HelmetProvider } from "react-helmet-async";
 
 // Core components
 import Header from "@/components/Header";
@@ -40,6 +41,7 @@ const Ambassador = lazy(() => import("@/pages/Ambassador"));
 const GuestSpeaker = lazy(() => import("@/pages/GuestSpeaker"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const Accommodation = lazy(() => import("@/pages/Accommodation"));
+const SponsorshipForm = lazy(() => import("@/pages/SponsorshipForm"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -73,9 +75,10 @@ const App = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark" storageKey="qiskit-fest-theme">
-        <TooltipProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider defaultTheme="dark" storageKey="qiskit-fest-theme">
+          <TooltipProvider>
           {/* Centered Toast - Updated positioning */}
           <Toaster />
           <Sonner position="bottom-right" />
@@ -123,6 +126,10 @@ const App = () => {
                         <Route
                           path="/accommodation"
                           element={<Accommodation />}
+                        />
+                        <Route
+                          path="/sponsorship-form"
+                          element={<SponsorshipForm />}
                         />
                         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                         <Route path="*" element={<NotFound />} />
@@ -180,9 +187,10 @@ const App = () => {
               </div>
             </AuthProvider>
           </BrowserRouter>
-        </TooltipProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+          </TooltipProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 

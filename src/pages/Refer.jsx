@@ -361,6 +361,35 @@ const Refer = () => {
     );
   }
 
+  if (!hasRegistration) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="min-h-screen bg-background py-20"
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h1 className="text-4xl lg:text-5xl font-bold font-poppins mb-8">
+              Refer & Earn
+            </h1>
+            <p className="text-xl text-muted-foreground mb-12">
+              Complete your registration first to access the referral program and start earning rewards!
+            </p>
+            <Button onClick={() => navigate("/register")} className="btn-quantum">
+              Register Now
+            </Button>
+          </motion.div>
+        </div>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -460,8 +489,8 @@ const Refer = () => {
                   </>
                 ) : (
                   <p className="text-muted-foreground">
-                    Apply a friend's referral code first to get your own
-                    referral code.
+                    Register to Generate Your Own
+                    Referral Code.
                   </p>
                 )}
               </CardContent>

@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { Sparkles, Users, Rocket, ArrowRight, FileText } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import sponsorsData from "@/data/sponsors.json";
@@ -88,24 +90,112 @@ const Sponsors = () => {
 
           {/* Become a Sponsor CTA */}
           <motion.div
-            className="text-center mt-20"
+            className="mt-20"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
           >
-            <h2 className="text-3xl font-bold mb-4">Want to be a Sponsor?</h2>
-            <p className="text-muted-foreground mb-6">
-              Support Qiskit Fall Fest 2025 and showcase your brand to the
-              quantum community.
-            </p>
-            <Button
-              asChild
-              size="lg"
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-4 rounded-xl shadow-lg hover:opacity-90 transition"
-            >
-              <a href="https://drive.google.com/file/d/1WhSm2RejgzMJTuQrj0xJSBdGUl17PZxT/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-                View the Broucher
-              </a>
-            </Button>
+            <Card className="relative overflow-hidden border border-primary/30 bg-gradient-to-br from-primary/10 via-background/95 to-secondary/10 backdrop-blur">
+              <CardContent className="p-10">
+                <div className="absolute inset-0 opacity-20 pointer-events-none">
+                  <div className="w-full h-full bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.35),_transparent),_radial-gradient(circle_at_bottom,_rgba(192,132,252,0.25),_transparent)]" />
+                </div>
+
+                <div className="relative grid gap-8 lg:grid-cols-[1.5fr_1fr] items-center">
+                  <motion.div
+                    className="space-y-6 text-center lg:text-left"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.15 }}
+                  >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium">
+                      <Sparkles className="h-4 w-4" />
+                      Exclusive Partnership Opportunity
+                    </div>
+                    <div>
+                      <h2 className="text-3xl lg:text-4xl font-bold mb-4">Become a Sponsor</h2>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Support Qiskit Fall Fest 2025 and align your brand with the brightest minds in the quantum ecosystem. Amplify your impact among 23,000+ students, researchers, and industry leaders.
+                      </p>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      <div className="p-4 rounded-xl bg-background/80 border border-white/10 shadow-sm">
+                        <div className="flex items-center gap-3 text-primary font-semibold">
+                          <Users className="h-5 w-5" />
+                          Audience Reach
+                        </div>
+                        <p className="mt-2 text-sm text-muted-foreground">
+                          Engage with a curated community of passionate innovators and technologists.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-background/80 border border-white/10 shadow-sm">
+                        <div className="flex items-center gap-3 text-primary font-semibold">
+                          <Rocket className="h-5 w-5" />
+                          Brand Elevation
+                        </div>
+                        <p className="mt-2 text-sm text-muted-foreground">
+                          Showcase your commitment to the future of quantum technology and education.
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-background/80 border border-white/10 shadow-sm">
+                        <div className="flex items-center gap-3 text-primary font-semibold">
+                          <Sparkles className="h-5 w-5" />
+                          Custom Experiences
+                        </div>
+                        <p className="mt-2 text-sm text-muted-foreground">
+                          Tailored sponsorship tiers to maximize your engagement and visibility.
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    className="relative space-y-4 text-center"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.25 }}
+                  >
+                    <div className="p-6 rounded-2xl bg-background/80 border border-primary/20 shadow-xl">
+                      <p className="text-muted-foreground text-sm mb-4">
+                        Download our detailed sponsor brochure to explore benefits, tiers, and customized collaboration options.
+                      </p>
+                      <div className="grid gap-3">
+                        <Button
+                          asChild
+                          size="lg"
+                          className="btn-quantum h-14 text-base font-semibold rounded-full shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all"
+                        >
+                          <Link
+                            to="/sponsorship-form"
+                            className="flex items-center justify-center gap-2"
+                          >
+                            Apply to Become a Sponsor
+                            <ArrowRight className="h-5 w-5" />
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          asChild
+                          className="h-14 text-base font-semibold rounded-full border-primary/60 text-primary hover:bg-primary/15 hover:text-primary-foreground transition-all"
+                        >
+                          <a
+                            href="https://drive.google.com/file/d/1WhSm2RejgzMJTuQrj0xJSBdGUl17PZxT/view?usp=sharing"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-2"
+                          >
+                            <FileText className="h-5 w-5" />
+                            View Sponsor&apos;s Brochure
+                          </a>
+                        </Button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
         </div>
       </section>
