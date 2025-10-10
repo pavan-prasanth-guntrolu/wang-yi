@@ -37,12 +37,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/components/AuthProvider";
-import groupQR from "/images/group-q.png";
+import groupQR from "/images/newwhat.png";
 import secondQR from "/images/second-qr.jpg";
 
 // ✅ WhatsApp link
 const WHATSAPP_GROUP_LINK =
-  "https://chat.whatsapp.com/IOa3y2QZaaCI1JCHCOmZIP?mode=ems_qr_t";
+  "https://chat.whatsapp.com/I3m4kmoFze91oOjnydI6tc?mode=ems_qr_t";
 
 // ✅ All countries list
 const countries = [
@@ -145,11 +145,10 @@ const Register = () => {
   
   // Email verification states
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
   const [isVerifyingEmail, setIsVerifyingEmail] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [generatedOtp, setGeneratedOtp] = useState("");
-  const [enteredOtp, setEnteredOtp] = useState("");
-  const [otpError, setOtpError] = useState("");
+  const [otpTimer, setOtpTimer] = useState(0);
 
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -159,8 +158,21 @@ const Register = () => {
   useEffect(() => {
     if (user?.email) {
       setFormData((prev) => ({ ...prev, email: user.email }));
+      // Don't auto-verify email - require OTP verification
+      setIsEmailVerified(false);
     }
   }, [user]);
+
+  // OTP Timer effect
+  useEffect(() => {
+    let interval;
+    if (otpTimer > 0) {
+      interval = setInterval(() => {
+        setOtpTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [otpTimer]);
 
   useEffect(() => {
     const ref = searchParams.get("ref");
@@ -266,13 +278,7 @@ const Register = () => {
     }
   };
 
-  // Generate 6-digit OTP
-  const generateOtp = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-  };
-
-  // Handle email verification
-  const handleVerifyEmail = async () => {
+  const generateOtp = async () => {
     if (!formData.email) {
       toast({
         title: "Email Required",
@@ -281,80 +287,87 @@ const Register = () => {
       });
       return;
     }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsVerifyingEmail(true);
-    setOtpError("");
     
+    setIsVerifyingEmail(true);
     try {
-      // Generate 6-digit OTP
-      const otp = generateOtp();
-      setGeneratedOtp(otp);
-
-      // Send OTP using the provided API endpoint
-      const apiUrl = `https://quantum.rgukt.in/send_mails/vendor/send_mail.php?to_email=${encodeURIComponent(formData.email)}&name=${encodeURIComponent(formData.fullName || 'User')}&otp=${otp}`;
+      const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+      
+      // Send OTP via external API
+      const apiUrl = `https://quantum.rgukt.in/send_mails/vendor/send_mail.php?to_email=${encodeURIComponent(formData.email)}&name=${encodeURIComponent(formData.fullName || "User")}&otp=${otpCode}`;
       
       const response = await fetch(apiUrl, {
         method: 'GET',
-        mode: 'no-cors', // Handle CORS issues
+        mode: 'no-cors'
       });
-
-      // Since we're using no-cors mode, we can't check response.ok
-      // If the fetch doesn't throw an error, assume it worked
-      setOtpSent(true);
+      
+      // Store OTP temporarily (in production, this should be server-side)
+      sessionStorage.setItem('registration_otp', otpCode);
+      sessionStorage.setItem('otp_email', formData.email);
+      sessionStorage.setItem('otp_timestamp', Date.now().toString());
+      
+      setIsOtpSent(true);
+      setOtpTimer(60); // 60 seconds countdown
       toast({
-        title: "OTP Sent",
+        title: "OTP Sent!",
         description: "Please check your email for the verification code.",
       });
     } catch (error) {
       console.error('Error sending OTP:', error);
-      // Even if there's an error, the email might still be sent
-      // Let's show a more helpful message
-      setOtpSent(true);
       toast({
-        title: "OTP Request Sent",
-        description: "Please check your email for the verification code. If you don't receive it within a few minutes, try again.",
-        variant: "default",
+        title: "Error Sending OTP",
+        description: "Please try again later.",
+        variant: "destructive",
       });
     } finally {
       setIsVerifyingEmail(false);
     }
   };
 
-  // Handle OTP verification
-  const handleOtpVerification = () => {
-    if (!enteredOtp) {
-      setOtpError("Please enter the OTP");
+  const handleVerifyEmail = async () => {
+    if (!otp) {
+      toast({
+        title: "OTP Required",
+        description: "Please enter the verification code.",
+        variant: "destructive",
+      });
       return;
     }
 
-    if (enteredOtp.length !== 6) {
-      setOtpError("OTP must be 6 digits");
+    const storedOtp = sessionStorage.getItem('registration_otp');
+    const storedEmail = sessionStorage.getItem('otp_email');
+    const otpTimestamp = parseInt(sessionStorage.getItem('otp_timestamp') || '0');
+    
+    // Check if OTP is expired (5 minutes)
+    if (Date.now() - otpTimestamp > 5 * 60 * 1000) {
+      toast({
+        title: "OTP Expired",
+        description: "Please request a new verification code.",
+        variant: "destructive",
+      });
       return;
     }
 
-    if (enteredOtp !== generatedOtp) {
-      setOtpError("Invalid OTP. Please try again.");
-      return;
+    if (otp === storedOtp && formData.email === storedEmail) {
+      setIsEmailVerified(true);
+      toast({
+        title: "Email Verified!",
+        description: "You can now proceed with registration.",
+      });
+      
+      // Clean up stored OTP
+      sessionStorage.removeItem('registration_otp');
+      sessionStorage.removeItem('otp_email');
+      sessionStorage.removeItem('otp_timestamp');
+    } else {
+      toast({
+        title: "Invalid OTP",
+        description: "Please check the verification code and try again.",
+        variant: "destructive",
+      });
     }
-
-    // OTP is valid
-    setIsEmailVerified(true);
-    setOtpError("");
-    toast({
-      title: "Email Verified",
-      description: "Your email has been successfully verified!",
-    });
   };
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -727,79 +740,80 @@ const Register = () => {
                         )}
                       </Label>
                       <div className="space-y-3">
-                        <div className="flex gap-2">
-                          <div className="relative group flex-1">
-                            <Input
-                              id="email"
-                              value={formData.email}
-                              onChange={(e) => handleInputChange("email", e.target.value)}
-                              placeholder="your@email.com"
-                              disabled={isEmailVerified}
-                              className={`pl-10 transition-all ${isEmailVerified ? "bg-muted cursor-not-allowed" : "group-hover:border-quantum-blue/50 focus:border-quantum-blue"}`}
-                              required
-                            />
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors" />
-                          </div>
-                          <Button
-                            type="button"
-                            onClick={handleVerifyEmail}
-                            disabled={isVerifyingEmail || isEmailVerified || !formData.email}
-                            className="whitespace-nowrap"
-                            variant={isEmailVerified ? "default" : "outline"}
-                            size="sm"
-                          >
-                            {isVerifyingEmail ? (
-                              "Sending..."
-                            ) : isEmailVerified ? (
-                              <>
-                                <Shield className="h-4 w-4 mr-1" />
-                                Verified
-                              </>
-                            ) : (
-                              "Verify"
-                            )}
-                          </Button>
+                        <div className="relative group">
+                          <Input
+                            id="email"
+                            value={formData.email}
+                            placeholder="Automatically set from your authenticated account"
+                            disabled={true}
+                            className="pl-10 bg-muted cursor-not-allowed text-muted-foreground"
+                            required
+                          />
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         </div>
-                        
-                        {/* OTP Input Field */}
-                        {otpSent && !isEmailVerified && (
+
+                        {/* Email Verification Section */}
+                        {!isEmailVerified && (
                           <motion.div 
-                            className="space-y-2"
+                            className="space-y-3"
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
                             transition={{ duration: 0.3 }}
                           >
-                            <Label htmlFor="otp" className="text-sm flex items-center gap-1">
-                              <Info className="h-3 w-3" />
-                              Enter verification code sent to your email
-                            </Label>
                             <div className="flex gap-2">
-                              <Input
-                                id="otp"
-                                value={enteredOtp}
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(/\D/g, '').slice(0, 6);
-                                  setEnteredOtp(value);
-                                  setOtpError("");
-                                }}
-                                placeholder="000000"
-                                maxLength={6}
-                                className="text-center font-mono text-lg tracking-widest"
-                              />
                               <Button
                                 type="button"
-                                onClick={handleOtpVerification}
-                                disabled={!enteredOtp || enteredOtp.length !== 6}
+                                variant="outline"
                                 size="sm"
+                                onClick={generateOtp}
+                                disabled={isVerifyingEmail || otpTimer > 0}
+                                className="flex-shrink-0"
                               >
-                                Verify
+                                {isVerifyingEmail ? (
+                                  <>
+                                    <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-current mr-2" />
+                                    Sending...
+                                  </>
+                                ) : otpTimer > 0 ? (
+                                  `Resend in ${otpTimer}s`
+                                ) : (
+                                  <>
+                                    <Mail className="h-3 w-3 mr-1" />
+                                    {isOtpSent ? "Resend OTP" : "Send OTP"}
+                                  </>
+                                )}
                               </Button>
                             </div>
-                            {otpError && (
-                              <p className="text-sm text-red-500 flex items-center gap-1">
-                                <AlertCircle className="h-4 w-4" />
-                                {otpError}
-                              </p>
+
+                            {isOtpSent && (
+                              <motion.div 
+                                className="space-y-2"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                <div className="flex gap-2">
+                                  <Input
+                                    value={otp}
+                                    onChange={(e) => setOtp(e.target.value)}
+                                    placeholder="Enter 6-digit OTP"
+                                    maxLength={6}
+                                    className="flex-1"
+                                  />
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    onClick={handleVerifyEmail}
+                                    disabled={!otp || otp.length !== 6}
+                                  >
+                                    <Shield className="h-3 w-3 mr-1" />
+                                    Verify
+                                  </Button>
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  📧 Check your email for the verification code
+                                </p>
+                              </motion.div>
                             )}
                           </motion.div>
                         )}
@@ -813,7 +827,7 @@ const Register = () => {
                             transition={{ duration: 0.3 }}
                           >
                             <CheckCircle className="h-4 w-4" />
-                            Email verified successfully!
+                            ✓ Email verified successfully
                           </motion.p>
                         )}
                       </div>

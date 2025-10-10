@@ -29,17 +29,44 @@ const AuthComponent = () => {
     // Listen for auth state changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       // This listener will trigger on SIGNED_IN, SIGNED_OUT, PASSWORD_RECOVERY, etc.
       if (event === "SIGNED_IN" && session) {
-        navigate("/register");
+        try {
+          // Check if user already has a registration
+          const { data: registration } = await supabase
+            .from("registrations")
+            .select("id")
+            .eq("user_id", session.user.id)
+            .maybeSingle();
+
+          if (registration) {
+            // User already registered, redirect to home
+            navigate("/");
+            toast({
+              title: "Welcome back!",
+              description: "You have already completed your registration.",
+            });
+          } else {
+            // New user, redirect to registration
+            navigate("/register");
+            toast({
+              title: "Registration Required",
+              description: "Please complete your registration to continue.",
+            });
+          }
+        } catch (error) {
+          console.error("Error checking registration status:", error);
+          // If there's an error, still redirect to register page
+          navigate("/register");
+        }
       }
     }); // Clean up the listener on component unmount
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate]); // Re-run effect if navigate function changes
+  }, [navigate, toast]); // Re-run effect if navigate function changes
 
   const handleAuth = async (e) => {
     e.preventDefault();
