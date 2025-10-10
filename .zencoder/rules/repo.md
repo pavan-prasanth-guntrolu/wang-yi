@@ -89,3 +89,6 @@ npm run preview
 **Build Output**: dist/ directory
 **Hosting Options**: GitHub Pages, Netlify, Vercel
 **CI/CD**: GitHub Actions workflow for automated deployment
+
+## Testing
+**targetFramework**: Playwright
