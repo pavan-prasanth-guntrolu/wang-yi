@@ -334,12 +334,21 @@ const Register = () => {
               className="w-48 h-48 border rounded-lg"
             />
           </div>
-          <Button
-            onClick={() => window.open(WHATSAPP_GROUP_LINK, "_blank")}
-            className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white"
-          >
-            Join WhatsApp Group
-          </Button>
+          <div className="flex flex-col gap-4 mt-4">
+            <Button
+              onClick={() => window.open(WHATSAPP_GROUP_LINK, "_blank")}
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+            >
+              Join WhatsApp Group
+            </Button>
+            <Button
+              onClick={() => navigate("/refer")}
+              variant="outline"
+              className="w-full"
+            >
+              Go to Refer & Earn
+            </Button>
+          </div>
         </motion.div>
       </motion.div>
     );

@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/components/AuthProvider";
+import { Helmet } from "react-helmet-async";
 import {
   Calendar,
   Users,
@@ -26,30 +27,30 @@ const Home = () => {
   const features = [
     {
       icon: BookOpen,
-      title: "Hands-on Workshops",
+      title: "Quantum Computing Workshops",
       description:
-        "Learn Qiskit through interactive workshops led by quantum computing experts.",
+        "Learn Qiskit through interactive quantum computing workshops led by experts in India.",
       link: "/workshops",
     },
     {
       icon: Users,
-      title: "Expert Speakers",
+      title: "Quantum Technology Speakers",
       description:
-        "Hear from leading researchers and practitioners in quantum computing.",
+        "Hear from leading researchers and practitioners in quantum science and AI.",
       link: "/speakers",
     },
     {
       icon: Trophy,
-      title: "Campus Hackathon",
+      title: "Quantum Hackathon",
       description:
-        "Build quantum applications and compete for exciting prizes.",
+        "Build quantum applications and compete for prizes in quantum innovation.",
       link: "/hackathon",
     },
     {
       icon: Calendar,
-      title: "Structured Learning",
+      title: "Quantum Learning Schedule",
       description:
-        "Follow a carefully curated schedule designed for maximum learning.",
+        "Follow a curated schedule for quantum computing tutorials and research.",
       link: "/schedule",
     },
   ];
@@ -62,13 +63,20 @@ const Home = () => {
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="space-y-0"
-    >
+    <>
+      <Helmet>
+        <title>Qiskit Fall Fest 2025 — Quantum Computing Event at IIIT Srikakulam</title>
+        <meta name="description" content="Join Qiskit Fall Fest 2025 at IIIT Srikakulam for hands-on quantum computing workshops, hackathon, and expert speakers. Learn quantum technology, Qiskit, and quantum research in India." />
+        <meta name="keywords" content="Qiskit Fall Fest 2025, quantum computing, quantum technology, quantum research India, quantum AI, quantum cryptography, quantum innovation, IIIT Srikakulam, hackathon, workshops, quantum computing tutorials, quantum science, quantum physics, quantum computing for beginners" />
+        <link rel="canonical" href="https://quantum.rgukt.in/" />
+      </Helmet>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-0"
+      >
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden hero-gradient">
         {/* 3D Background */}
@@ -86,6 +94,12 @@ const Home = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
+              <h1 className="text-5xl lg:text-7xl font-bold font-poppins mb-6 bg-gradient-to-r from-primary via-blue-400 to-purple-500 bg-clip-text text-transparent leading-tight">
+                Qiskit Fall Fest 2025
+              </h1>
+              <p className="text-xl lg:text-2xl text-muted-foreground mb-8 leading-relaxed max-w-2xl mx-auto">
+                Quantum Computing Workshops & Hackathon at IIIT Srikakulam
+              </p>
               {/* Event Badge */}
               {/* <motion.div
                 className="inline-flex items-center px-4 py-2 rounded-full glass-card border border-white/20 mb-6"
@@ -391,7 +405,8 @@ const Home = () => {
           </motion.div>
         </div>
       </section>
-    </motion.div>
+      </motion.div>
+    </>
   );
 };
 

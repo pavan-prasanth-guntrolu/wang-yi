@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   User,
   Mail,
@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/components/AuthProvider";
@@ -130,6 +131,7 @@ const Profile = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
 
   const {
     register,
@@ -143,6 +145,28 @@ const Profile = () => {
   });
 
   const watchedCountry = watch("country");
+
+  const [registerFormData, setRegisterFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    institution: "",
+    year: "",
+    branch: "",
+    experience: "",
+    motivation: "",
+    referralCode: "",
+    attendanceMode: "",
+    agreeTerms: false,
+    agreeUpdates: false,
+    country: "",
+    state: "",
+    gender: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isReferralCodeLocked, setIsReferralCodeLocked] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -188,6 +212,19 @@ const Profile = () => {
 
     fetchProfileData();
   }, [user, navigate, setValue, toast]);
+
+  useEffect(() => {
+    if (user?.email) {
+      setRegisterFormData((prev) => ({ ...prev, email: user.email }));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const ref = searchParams.get("ref");
+    if (ref && !isReferralCodeLocked) {
+      setRegisterFormData((prev) => ({ ...prev, referralCode: ref }));
+    }
+  }, [searchParams, isReferralCodeLocked]);
 
   const onSubmit = async (formData) => {
     setUpdating(true);
@@ -236,6 +273,116 @@ const Profile = () => {
     }
   };
 
+  const handleRegisterInputChange = (field, value) => {
+    setRegisterFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const validateRegisterForm = () => {
+    const requiredFields = [
+      "fullName",
+      "email",
+      "phone",
+      "institution",
+      "year",
+      "branch",
+      "attendanceMode",
+      "country",
+      "gender",
+    ];
+    if (registerFormData.country === "India") requiredFields.push("state");
+
+    const missingFields = requiredFields.filter((f) => !registerFormData[f]);
+    if (missingFields.length > 0) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    if (!registerFormData.agreeTerms) {
+      toast({
+        title: "Terms & Conditions",
+        description: "Please agree to the terms and conditions to continue.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const generateUniqueReferralCode = async () => {
+    while (true) {
+      const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+      const { data, error } = await supabase
+        .from("registrations")
+        .select("id")
+        .eq("referral_code", code)
+        .maybeSingle();
+      if (error) throw error;
+      if (!data) return code;
+    }
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateRegisterForm()) return;
+    setIsSubmitting(true);
+    try {
+      if (!user) return;
+
+      const referralCode = await generateUniqueReferralCode();
+      let referredBy = null;
+      if (registerFormData.referralCode) {
+        const { data: referrer } = await supabase
+          .from("registrations")
+          .select("id")
+          .eq("referral_code", registerFormData.referralCode)
+          .single();
+        if (referrer) referredBy = referrer.id;
+      }
+
+      const { error } = await supabase.from("registrations").insert([
+        {
+          user_id: user.id,
+          fullName: registerFormData.fullName,
+          email: registerFormData.email,
+          phone: registerFormData.phone,
+          gender: registerFormData.gender,
+          institution: registerFormData.institution,
+          year: registerFormData.year,
+          branch: registerFormData.branch,
+          experience: registerFormData.experience,
+          motivation: registerFormData.motivation,
+          referral_code: referralCode,
+          referred_by: referredBy,
+          attendance_mode: registerFormData.attendanceMode,
+          country: registerFormData.country,
+          state: registerFormData.state,
+        },
+      ]);
+
+      if (error) throw error;
+
+      setIsSubmitted(true);
+      toast({
+        title: "Registration Successful!",
+        description: "You have registered for Qiskit Fall Fest 🎉",
+      });
+      // Refresh the page to load profile
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Registration Failed",
+        description: err.message || "Try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (!user) {
     return (
       <motion.div className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -256,6 +403,307 @@ const Profile = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
       </div>
+    );
+  }
+
+  if (!profileData) {
+    return (
+      <motion.div className="min-h-screen bg-background py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div className="max-w-2xl mx-auto">
+            <div className="text-center mb-12">
+              <h1 className="text-4xl font-bold mb-4">
+                Register for Qiskit Fall Fest 2025
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                Secure your spot at IIIT Srikakulam's quantum computing celebration
+              </p>
+            </div>
+            <Card className="glass-card border border-white/10">
+              <CardHeader>
+                <CardTitle className="text-2xl font-semibold">
+                  Registration Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleRegisterSubmit} className="space-y-6">
+                  {/* Personal Info */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="fullName">Full Name *</Label>
+                      <Input
+                        id="fullName"
+                        value={registerFormData.fullName}
+                        onChange={(e) =>
+                          handleRegisterInputChange("fullName", e.target.value)
+                        }
+                        placeholder="Enter your full name"
+                        required
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Note: This name will be considered for certificates.
+                      </p>
+                    </div>
+                    <div>
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        value={registerFormData.email}
+                        readOnly
+                        className="bg-muted cursor-not-allowed"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Input
+                      id="phone"
+                      value={registerFormData.phone}
+                      onChange={(e) => handleRegisterInputChange("phone", e.target.value)}
+                      placeholder="+91 XXXXX XXXXX"
+                      required
+                    />
+                  </div>
+                  {/* Gender */}
+                  <div>
+                    <Label htmlFor="gender">Gender *</Label>
+                    <Select
+                      value={registerFormData.gender}
+                      onValueChange={(value) =>
+                        handleRegisterInputChange("gender", value)
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select gender" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem
+                          value="Male"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          Male
+                        </SelectItem>
+                        <SelectItem
+                          value="Female"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          Female
+                        </SelectItem>
+                        <SelectItem
+                          value="Other"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          Other
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {/* Institution */}
+                  <div>
+                    <Label htmlFor="institution">Institution *</Label>
+                    <Input
+                      id="institution"
+                      value={registerFormData.institution}
+                      onChange={(e) => handleRegisterInputChange("institution", e.target.value)}
+                      placeholder="Enter your institution"
+                      required
+                    />
+                  </div>
+                  {/* Year and Branch */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="year">Year *</Label>
+                      <Input
+                        id="year"
+                        value={registerFormData.year}
+                        onChange={(e) => handleRegisterInputChange("year", e.target.value)}
+                        placeholder="e.g., 3rd Year, Final Year"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="branch">Branch *</Label>
+                      <Input
+                        id="branch"
+                        value={registerFormData.branch}
+                        onChange={(e) => handleRegisterInputChange("branch", e.target.value)}
+                        placeholder="e.g., Computer Science"
+                        required
+                      />
+                    </div>
+                  </div>
+                  {/* Experience */}
+                  <div>
+                    <Label htmlFor="experience">Experience (Optional)</Label>
+                    <Textarea
+                      id="experience"
+                      value={registerFormData.experience}
+                      onChange={(e) => handleRegisterInputChange("experience", e.target.value)}
+                      placeholder="Tell us about your experience in quantum computing or related fields"
+                      rows={3}
+                    />
+                  </div>
+                  {/* Motivation */}
+                  <div>
+                    <Label htmlFor="motivation">Motivation (Optional)</Label>
+                    <Textarea
+                      id="motivation"
+                      value={registerFormData.motivation}
+                      onChange={(e) => handleRegisterInputChange("motivation", e.target.value)}
+                      placeholder="Why do you want to attend Qiskit Fall Fest?"
+                      rows={3}
+                    />
+                  </div>
+                  {/* Attendance Mode */}
+                  <div>
+                    <Label htmlFor="attendanceMode">Attendance Mode *</Label>
+                    <Select
+                      value={registerFormData.attendanceMode}
+                      onValueChange={(value) =>
+                        handleRegisterInputChange("attendanceMode", value)
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select attendance mode" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem
+                          value="in-person"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          In-Person
+                        </SelectItem>
+                        <SelectItem
+                          value="virtual"
+                          className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                        >
+                          Virtual
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {/* Country and State */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="country">Country *</Label>
+                      <Select
+                        value={registerFormData.country}
+                        onValueChange={(value) =>
+                          handleRegisterInputChange("country", value)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select country" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {countries.map((country) => (
+                            <SelectItem
+                              key={country}
+                              value={country}
+                              className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                            >
+                              {country}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {registerFormData.country === "India" && (
+                      <div>
+                        <Label htmlFor="state">State *</Label>
+                        <Select
+                          value={registerFormData.state}
+                          onValueChange={(value) =>
+                            handleRegisterInputChange("state", value)
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select state" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {indianStates.map((state) => (
+                              <SelectItem
+                                key={state}
+                                value={state}
+                                className="px-4 py-2 text-sm hover:bg-primary/10 rounded-md"
+                              >
+                                {state}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </div>
+                  {/* Referral Code */}
+                  <div>
+                    <Label htmlFor="referralCode">Referral Code (Optional)</Label>
+                    <Input
+                      id="referralCode"
+                      value={registerFormData.referralCode}
+                      onChange={(e) => handleRegisterInputChange("referralCode", e.target.value)}
+                      placeholder="Enter referral code if you have one"
+                      disabled={isReferralCodeLocked}
+                    />
+                  </div>
+                  {/* Terms and Updates */}
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="agreeTerms"
+                        checked={registerFormData.agreeTerms}
+                        onCheckedChange={(checked) =>
+                          handleRegisterInputChange("agreeTerms", checked)
+                        }
+                      />
+                      <Label htmlFor="agreeTerms" className="text-sm">
+                        I agree to the{" "}
+                        <a
+                          href="/code-of-conduct"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary underline"
+                        >
+                          Terms & Conditions
+                        </a>{" "}
+                        and{" "}
+                        <a
+                          href="/code-of-conduct"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary underline"
+                        >
+                          Code of Conduct
+                        </a>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="agreeUpdates"
+                        checked={registerFormData.agreeUpdates}
+                        onCheckedChange={(checked) =>
+                          handleRegisterInputChange("agreeUpdates", checked)
+                        }
+                      />
+                      <Label htmlFor="agreeUpdates" className="text-sm">
+                        I agree to receive updates about the event
+                      </Label>
+                    </div>
+                  </div>
+                  {/* Submit Button */}
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 rounded-xl shadow-lg hover:opacity-90 transition"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Registering..." : "Register for Qiskit Fall Fest"}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </motion.div>
     );
   }
 

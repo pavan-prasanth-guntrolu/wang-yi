@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import {
   BookOpen,
   Clock,
@@ -99,20 +100,27 @@ const getDifficultyStars = (difficulty) => {
 
 const Workshops = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="min-h-screen bg-background"
-    >
+    <>
+      <Helmet>
+        <title>Quantum Computing Workshops | Qiskit Fall Fest 2025 at IIIT Srikakulam</title>
+        <meta name="description" content="Join quantum computing workshops at Qiskit Fall Fest 2025. Learn Qiskit, quantum technology, and quantum research through interactive sessions in India." />
+        <meta name="keywords" content="quantum computing workshops, Qiskit tutorials, quantum technology education, quantum computing for beginners, quantum research India, IIIT Srikakulam workshops" />
+        <link rel="canonical" href="https://quantum.rgukt.in/workshops" />
+      </Helmet>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="min-h-screen bg-background"
+      >
       {/* Header */}
       <section className="hero-gradient py-20 lg:py-24 text-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-poppins mb-6">
-            Workshops & <span className="text-gradient">Notebooks</span>
+            Quantum Computing Workshops & <span className="text-gradient">Notebooks</span>
           </h1>
           <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed mb-8">
-            Hands-on learning experiences with guided Jupyter notebooks and
-            interactive workshops
+            Hands-on quantum technology education and Qiskit tutorials at IIIT Srikakulam.
+            Hands-on learning experiences with guided Jupyter notebooks and interactive workshops.
           </p>
         </div>
       </section>
@@ -232,7 +240,8 @@ const Workshops = () => {
         </div>
       </section>
       <h1 className="text-3xl text-center text-bold">coming soon</h1>
-    </motion.div>
+      </motion.div>
+    </>
   );
 };
 
